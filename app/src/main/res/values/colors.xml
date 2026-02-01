@@ -2,4 +2,28 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Primary Colors - Green (Food/Fresh Theme) -->
+    <color name="primary">#34A853</color>
+    <color name="primary_dark">#2E7D32</color>
+    <color name="primary_light">#81C784</color>
+    
+    <!-- Secondary Colors - Orange (Appetite/Warmth) -->
+    <color name="secondary">#F89637</color>
+    <color name="secondary_dark">#E65100</color>
+    <color name="secondary_light">#FFCC80</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="splash_background">#34A853</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    
+    <!-- Status Colors -->
+    <color name="error">#D32F2F</color>
+    <color name="success">#388E3C</color>
 </resources>

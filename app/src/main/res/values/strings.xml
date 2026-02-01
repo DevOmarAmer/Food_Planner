@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Food Planner</string>
+    
+    <!-- Splash Screen -->
+    <string name="splash_tagline">Plan Your Meals, Simplify Your Life</string>
+    <string name="loading">Loading…</string>
 </resources>

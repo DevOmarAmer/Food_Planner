@@ -4,9 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.foodplanner"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.foodplanner"
@@ -38,6 +36,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    
+    // Lottie Animation Library
+    implementation("com.airbnb.android:lottie:6.3.0")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
