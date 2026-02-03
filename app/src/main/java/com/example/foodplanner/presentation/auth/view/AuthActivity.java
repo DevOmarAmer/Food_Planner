@@ -22,9 +22,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.Auth.dataSource.local.AuthLocalDataSource;
+import com.example.foodplanner.data.Auth.dataSource.local.AuthLocalDataSourceImpl;
+import com.example.foodplanner.data.Auth.dataSource.remote.AuthRemoteDataSource;
+import com.example.foodplanner.data.Auth.dataSource.remote.AuthRemoteDataSourceImpl;
+import com.example.foodplanner.data.Auth.repository.AuthRepository;
+import com.example.foodplanner.data.Auth.repository.AuthRepositoryImpl;
 import com.example.foodplanner.presentation.auth.presenter.AuthPresenter;
 import com.example.foodplanner.presentation.auth.presenter.AuthPresenterImpl;
 import com.example.foodplanner.presentation.home.MainActivity;
+import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -56,8 +63,11 @@ public class AuthActivity extends AppCompatActivity
             return insets;
         });
         
-
-        presenter = new AuthPresenterImpl(this, this, WEB_CLIENT_ID);
+        SharedPrefsHelper sharedPrefsHelper = SharedPrefsHelper.getInstance(this);
+        AuthLocalDataSource localDataSource = new AuthLocalDataSourceImpl(sharedPrefsHelper);
+        AuthRemoteDataSource remoteDataSource = new AuthRemoteDataSourceImpl();
+        AuthRepository authRepository = new AuthRepositoryImpl(remoteDataSource, localDataSource);
+        presenter = new AuthPresenterImpl(this, authRepository, WEB_CLIENT_ID);
         
         credentialManager = CredentialManager.create(this);
         cancellationSignal = new CancellationSignal();
