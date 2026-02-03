@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -39,6 +40,16 @@ dependencies {
     
     // Lottie Animation Library
     implementation("com.airbnb.android:lottie:6.3.0")
+    
+    // Firebase (using BOM for version management)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    
+    // Google Sign-In with Credential Manager
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.googleid)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

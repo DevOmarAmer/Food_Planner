@@ -1,13 +1,9 @@
-package com.example.foodplanner.splash;
+package com.example.foodplanner.presentation.splash;
 
-import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -18,8 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
-import com.example.foodplanner.auth.AuthActivity;
-
+import com.example.foodplanner.presentation.auth.view.AuthActivity;
+import com.example.foodplanner.presentation.home.MainActivity;
+import com.example.foodplanner.utils.SharedPrefsHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,6 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     private LottieAnimationView lottieAnimationView;
     private TextView tvAppName;
     private TextView tvTagline;
+    private SharedPrefsHelper sharedPrefsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,19 +34,16 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         
 
+        sharedPrefsHelper = SharedPrefsHelper.getInstance(this);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         
-
         initViews();
-        
-
         startAnimations();
-        
-
         navigateToNextScreen();
     }
 
@@ -58,9 +53,7 @@ public class SplashActivity extends AppCompatActivity {
         tvTagline = findViewById(R.id.tvTagline);
     }
     
-
     private void startAnimations() {
-        // Initially hide the text views
         tvAppName.setAlpha(0f);
         tvTagline.setAlpha(0f);
         
@@ -84,8 +77,16 @@ public class SplashActivity extends AppCompatActivity {
 
     private void navigateToNextScreen() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent intent;
 
-            Intent intent = new Intent(SplashActivity.this, AuthActivity.class);
+            if (sharedPrefsHelper.hasActiveSession()) {
+
+                intent = new Intent(SplashActivity.this, MainActivity.class);
+            } else {
+
+                intent = new Intent(SplashActivity.this, AuthActivity.class);
+            }
+            
             startActivity(intent);
             
 
@@ -95,7 +96,6 @@ public class SplashActivity extends AppCompatActivity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
             
-            // Finish splash so user can't go back to it
             finish();
         }, SPLASH_DURATION);
     }
@@ -103,7 +103,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         if (lottieAnimationView != null) {
             lottieAnimationView.cancelAnimation();
         }

@@ -18,7 +18,7 @@
         
         <!-- Splash Screen - Entry Point -->
         <activity
-            android:name=".splash.SplashActivity"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.FoodPlanner.Splash">
             <intent-filter>
@@ -29,7 +29,12 @@
         
         <!-- Authentication Activity -->
         <activity
-            android:name=".auth.AuthActivity"
+            android:name=".presentation.auth.view.AuthActivity"
+            android:exported="false" />
+        
+        <!-- Main Home Activity -->
+        <activity
+            android:name=".presentation.home.MainActivity"
             android:exported="false" />
             
     </application>
