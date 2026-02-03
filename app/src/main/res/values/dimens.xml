@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Onboarding Indicator Dimensions -->
+    <dimen name="indicator_active_width">24dp</dimen>
+    <dimen name="indicator_inactive_width">10dp</dimen>
+    <dimen name="indicator_height">10dp</dimen>
+    <dimen name="indicator_margin">8dp</dimen>
+</resources>

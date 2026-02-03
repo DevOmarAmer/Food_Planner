@@ -32,6 +32,12 @@
             android:name=".presentation.auth.view.AuthActivity"
             android:exported="false" />
         
+        <!-- Onboarding Activity -->
+        <activity
+            android:name=".presentation.onboarding.OnboardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.FoodPlanner.Onboarding" />
+        
         <!-- Main Home Activity -->
         <activity
             android:name=".presentation.home.MainActivity"

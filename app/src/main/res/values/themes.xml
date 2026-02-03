@@ -26,4 +26,13 @@
         <item name="android:statusBarColor">@color/splash_background</item>
         <item name="android:navigationBarColor">@color/splash_background</item>
     </style>
+    
+    <!-- Onboarding Screen Theme - Elegant and immersive -->
+    <style name="Theme.FoodPlanner.Onboarding" parent="Theme.FoodPlanner">
+        <item name="android:windowBackground">@color/surface</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>

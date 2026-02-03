@@ -45,4 +45,15 @@
     <string name="error_invalid_email">Please enter a valid email</string>
     <string name="error_login_failed">Login failed. Please try again.</string>
     <string name="error_signup_failed">Sign up failed. Please try again.</string>
+    
+    <!-- Onboarding -->
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get Started</string>
+    <string name="onboarding_title_1">Discover Delicious Recipes</string>
+    <string name="onboarding_desc_1">Explore thousands of mouth-watering recipes from around the world. Find your next favorite dish with our curated collection.</string>
+    <string name="onboarding_title_2">Plan Your Weekly Meals</string>
+    <string name="onboarding_desc_2">Organize your meals for the entire week with our smart planner. Save time and eat healthier with structured meal planning.</string>
+    <string name="onboarding_title_3">Save Your Favorites</string>
+    <string name="onboarding_desc_3">Bookmark recipes you love and access them anytime, even offline. Build your personal cookbook with a single tap.</string>
 </resources>
