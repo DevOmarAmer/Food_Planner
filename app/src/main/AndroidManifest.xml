@@ -42,6 +42,12 @@
         <activity
             android:name=".presentation.home.MainActivity"
             android:exported="false" />
+        
+        <!-- Meal Details Activity -->
+        <activity
+            android:name=".presentation.mealdetails.MealDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".presentation.home.MainActivity" />
             
     </application>
 

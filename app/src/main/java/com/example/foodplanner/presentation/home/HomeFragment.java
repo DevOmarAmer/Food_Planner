@@ -1,5 +1,6 @@
 package com.example.foodplanner.presentation.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.presentation.home.adapters.AreaAdapter;
 import com.example.foodplanner.presentation.home.adapters.CategoryAdapter;
+import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
 
 import java.util.List;
 
@@ -138,7 +140,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void navigateToMealDetails(String mealId) {
-        Toast.makeText(getContext(), "Meal Details: " + mealId, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), MealDetailsActivity.class);
+        intent.putExtra(MealDetailsActivity.EXTRA_MEAL_ID, mealId);
+        if (currentMealOfDay != null) {
+            intent.putExtra(MealDetailsActivity.EXTRA_MEAL_NAME, currentMealOfDay.getName());
+        }
+        startActivity(intent);
     }
 
     @Override
