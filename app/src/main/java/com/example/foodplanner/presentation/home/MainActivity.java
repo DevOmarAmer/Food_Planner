@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -13,28 +12,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.presentation.auth.view.AuthActivity;
 import com.example.foodplanner.utils.SharedPrefsHelper;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-/**
- * MainActivity - Home screen of the app
- * 
- * This will eventually contain:
- * 1. Meal of the day
- * 2. Categories list
- * 3. Countries list
- * 4. Bottom navigation (Home, Search, Favorites, Plan)
- * 
- * TODO: Implement in the next step
- */
 public class MainActivity extends AppCompatActivity {
 
     private SharedPrefsHelper sharedPrefsHelper;
-    private TextView tvWelcome;
-    private TextView tvUserStatus;
+    private NavController navController;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,31 +36,23 @@ public class MainActivity extends AppCompatActivity {
         
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
         
         sharedPrefsHelper = SharedPrefsHelper.getInstance(this);
         
-        initViews();
-        displayUserInfo();
+        setupNavigation();
     }
     
-    private void initViews() {
-        tvWelcome = findViewById(R.id.tvWelcome);
-        tvUserStatus = findViewById(R.id.tvUserStatus);
-    }
-    
-    private void displayUserInfo() {
-        String userName = sharedPrefsHelper.getUserName();
-        boolean isGuest = sharedPrefsHelper.isGuest();
+    private void setupNavigation() {
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
         
-        if (isGuest) {
-            tvWelcome.setText("Welcome, Guest!");
-            tvUserStatus.setText(R.string.guest_mode_notice);
-        } else {
-            tvWelcome.setText("Welcome, " + (userName != null ? userName : "User") + "!");
-            tvUserStatus.setText("You're logged in. Full features available.");
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+            bottomNavigationView = findViewById(R.id.bottom_navigation);
+            NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
     }
     
@@ -97,16 +81,17 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void logout() {
-        // Sign out from Firebase
         FirebaseAuth.getInstance().signOut();
-        
-        // Clear local session
         sharedPrefsHelper.logout();
         
-        // Navigate to Auth screen
         Intent intent = new Intent(this, AuthActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+    
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }
