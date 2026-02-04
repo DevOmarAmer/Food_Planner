@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/surface"
-    tools:context=".presentation.onboarding.OnboardingActivity">
+    tools:context=".presentation.onboarding.view.OnboardingActivity">
 
     <!-- Decorative Top Gradient Background -->
     <View
@@ -19,28 +20,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Decorative Circle 1 -->
-    <View
-        android:id="@+id/circleDecor1"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="-40dp"
-        android:layout_marginEnd="-60dp"
-        android:alpha="0.15"
-        android:background="@drawable/circle_decorative"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <View-->
+<!--        android:id="@+id/circleDecor1"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:layout_marginTop="-40dp"-->
+<!--        android:layout_marginEnd="-60dp"-->
+<!--        android:alpha="0.15"-->
+<!--        android:background="@drawable/circle_decorative"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <!-- Decorative Circle 2 -->
-    <View
-        android:id="@+id/circleDecor2"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="-50dp"
-        android:layout_marginTop="100dp"
-        android:alpha="0.1"
-        android:background="@drawable/circle_decorative"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    &lt;!&ndash; Decorative Circle 2 &ndash;&gt;-->
+<!--    <View-->
+<!--        android:id="@+id/circleDecor2"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:layout_marginStart="-50dp"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:alpha="0.1"-->
+<!--        android:background="@drawable/circle_decorative"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <!-- Skip Button -->
     <TextView
@@ -78,8 +79,10 @@
         android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@+id/indicatorContainer"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <!-- Page Indicators Container -->
     <LinearLayout

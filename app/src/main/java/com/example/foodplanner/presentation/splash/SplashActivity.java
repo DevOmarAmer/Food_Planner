@@ -16,6 +16,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
 import com.example.foodplanner.presentation.auth.view.AuthActivity;
 import com.example.foodplanner.presentation.home.MainActivity;
+import com.example.foodplanner.presentation.onboarding.view.OnboardingActivity;
 import com.example.foodplanner.utils.SharedPrefsHelper;
 
 public class SplashActivity extends AppCompatActivity {
@@ -80,10 +81,10 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent;
 
             if (sharedPrefsHelper.hasActiveSession()) {
-
                 intent = new Intent(SplashActivity.this, MainActivity.class);
+            } else if (!sharedPrefsHelper.isOnboardingCompleted()) {
+                intent = new Intent(SplashActivity.this, OnboardingActivity.class);
             } else {
-
                 intent = new Intent(SplashActivity.this, AuthActivity.class);
             }
             

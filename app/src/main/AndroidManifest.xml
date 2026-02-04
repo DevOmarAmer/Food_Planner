@@ -34,7 +34,7 @@
         
         <!-- Onboarding Activity -->
         <activity
-            android:name=".presentation.onboarding.OnboardingActivity"
+            android:name=".presentation.onboarding.view.OnboardingActivity"
             android:exported="false"
             android:theme="@style/Theme.FoodPlanner.Onboarding" />
         

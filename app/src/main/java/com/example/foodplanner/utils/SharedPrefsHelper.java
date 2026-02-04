@@ -11,6 +11,7 @@ public class SharedPrefsHelper {
     private static final String KEY_USER_EMAIL = "userEmail";
     private static final String KEY_USER_NAME = "userName";
     private static final String KEY_USER_ID = "userId";
+    private static final String KEY_ONBOARDING_COMPLETED = "onboardingCompleted";
     
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
@@ -80,5 +81,14 @@ public class SharedPrefsHelper {
 
     public boolean hasActiveSession() {
         return isLoggedIn() || isGuest();
+    }
+
+    public void setOnboardingCompleted(boolean completed) {
+        editor.putBoolean(KEY_ONBOARDING_COMPLETED, completed);
+        editor.apply();
+    }
+
+    public boolean isOnboardingCompleted() {
+        return sharedPreferences.getBoolean(KEY_ONBOARDING_COMPLETED, false);
     }
 }
