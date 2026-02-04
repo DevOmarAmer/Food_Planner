@@ -56,4 +56,23 @@
     <string name="onboarding_desc_2">Organize your meals for the entire week with our smart planner. Save time and eat healthier with structured meal planning.</string>
     <string name="onboarding_title_3">Save Your Favorites</string>
     <string name="onboarding_desc_3">Bookmark recipes you love and access them anytime, even offline. Build your personal cookbook with a single tap.</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_plan">Plan</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="plan">Meal Plan</string>
+    <string name="meal_of_the_day">Meal of the Day</string>
+    <string name="categories">Categories</string>
+    <string name="countries">Countries</string>
+    <string name="see_all">See All</string>
+    <string name="category_image">Category Image</string>
+    <string name="country_flag">Country Flag</string>
+    <string name="meal_image">Meal Image</string>
+    <string name="try_this">Try This!</string>
+    <string name="no_network">No internet connection</string>
+    <string name="retry">Retry</string>
 </resources>

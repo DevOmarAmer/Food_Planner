@@ -12,23 +12,17 @@ public class Area {
     @SerializedName("strArea")
     private String name;
     
-    // Constructor
     public Area() {}
     
     public Area(String name) {
         this.name = name;
     }
     
-    // Getters
     public String getName() { return name; }
     
-    // Setters
     public void setName(String name) { this.name = name; }
     
-    /**
-     * Get flag image URL based on country name
-     * Uses flagcdn.com for flag images
-     */
+  
     public String getFlagUrl() {
         String countryCode = getCountryCode();
         if (countryCode != null) {
@@ -37,9 +31,7 @@ public class Area {
         return null;
     }
     
-    /**
-     * Map area name to ISO country code for flag display
-     */
+  
     private String getCountryCode() {
         if (name == null) return null;
         
