@@ -27,13 +27,9 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                mealResponse -> {
+                                meal -> {
                                     view.hideLoading();
-                                    if (mealResponse.getMeals() != null && !mealResponse.getMeals().isEmpty()) {
-                                        view.showMeal(mealResponse.getMeals().get(0));
-                                    } else {
-                                        view.showError("Meal not found");
-                                    }
+                                    view.showMeal(meal);
                                 },
                                 throwable -> {
                                     view.hideLoading();
