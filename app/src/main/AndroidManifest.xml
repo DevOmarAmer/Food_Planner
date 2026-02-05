@@ -40,20 +40,20 @@
         
         <!-- Main Home Activity -->
         <activity
-            android:name=".presentation.home.MainActivity"
+            android:name=".presentation.home.view.MainActivity"
             android:exported="false" />
         
         <!-- Meal Details Activity -->
         <activity
             android:name=".presentation.mealdetails.MealDetailsActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.home.MainActivity" />
+            android:parentActivityName=".presentation.home.view.MainActivity" />
         
         <!-- Meals List Activity (Filter by Category/Area/Ingredient) -->
         <activity
-            android:name=".presentation.mealslist.MealsListActivity"
+            android:name=".presentation.mealslist.view.MealsListActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.home.MainActivity" />
+            android:parentActivityName=".presentation.home.view.MainActivity" />
             
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.foodplanner.presentation.home.presenter;
+package com.example.foodplanner.presentation.home.view.presenter;
 
 import android.util.Log;
 
@@ -6,7 +6,7 @@ import com.example.foodplanner.data.model.Area;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repository.MealRepository;
-import com.example.foodplanner.presentation.home.HomeView;
+import com.example.foodplanner.presentation.home.view.HomeView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;

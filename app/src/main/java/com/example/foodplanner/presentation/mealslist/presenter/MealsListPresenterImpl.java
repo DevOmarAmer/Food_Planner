@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repository.MealRepository;
-import com.example.foodplanner.presentation.mealslist.MealsListView;
+import com.example.foodplanner.presentation.mealslist.view.MealsListView;
 
 import java.util.List;
 

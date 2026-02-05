@@ -1,4 +1,4 @@
-package com.example.foodplanner.presentation.home;
+package com.example.foodplanner.presentation.home.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,9 +25,9 @@ import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.presentation.home.adapters.AreaAdapter;
 import com.example.foodplanner.presentation.home.adapters.CategoryAdapter;
-import com.example.foodplanner.presentation.home.presenter.HomePresenterImpl;
+import com.example.foodplanner.presentation.home.view.presenter.HomePresenterImpl;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
-import com.example.foodplanner.presentation.mealslist.MealsListActivity;
+import com.example.foodplanner.presentation.mealslist.view.MealsListActivity;
 
 import java.util.List;
 

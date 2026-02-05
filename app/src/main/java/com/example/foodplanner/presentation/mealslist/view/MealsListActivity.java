@@ -1,4 +1,4 @@
-package com.example.foodplanner.presentation.mealslist;
+package com.example.foodplanner.presentation.mealslist.view;
 
 import android.content.Context;
 import android.content.Intent;

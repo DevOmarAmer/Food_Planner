@@ -30,7 +30,7 @@ import com.example.foodplanner.data.Auth.repository.AuthRepository;
 import com.example.foodplanner.data.Auth.repository.AuthRepositoryImpl;
 import com.example.foodplanner.presentation.auth.presenter.AuthPresenter;
 import com.example.foodplanner.presentation.auth.presenter.AuthPresenterImpl;
-import com.example.foodplanner.presentation.home.MainActivity;
+import com.example.foodplanner.presentation.home.view.MainActivity;
 import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.snackbar.Snackbar;
