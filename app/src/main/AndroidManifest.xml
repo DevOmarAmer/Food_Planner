@@ -48,6 +48,12 @@
             android:name=".presentation.mealdetails.MealDetailsActivity"
             android:exported="false"
             android:parentActivityName=".presentation.home.MainActivity" />
+        
+        <!-- Meals List Activity (Filter by Category/Area/Ingredient) -->
+        <activity
+            android:name=".presentation.mealslist.MealsListActivity"
+            android:exported="false"
+            android:parentActivityName=".presentation.home.MainActivity" />
             
     </application>
 

@@ -27,6 +27,7 @@ import com.example.foodplanner.presentation.home.adapters.AreaAdapter;
 import com.example.foodplanner.presentation.home.adapters.CategoryAdapter;
 import com.example.foodplanner.presentation.home.presenter.HomePresenterImpl;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
+import com.example.foodplanner.presentation.mealslist.MealsListActivity;
 
 import java.util.List;
 
@@ -150,12 +151,22 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void navigateToCategory(String categoryName) {
-        Toast.makeText(getContext(), "Category: " + categoryName, Toast.LENGTH_SHORT).show();
+        Intent intent = MealsListActivity.createIntent(
+                getContext(),
+                MealsListActivity.FILTER_CATEGORY,
+                categoryName
+        );
+        startActivity(intent);
     }
 
     @Override
     public void navigateToArea(String areaName) {
-        Toast.makeText(getContext(), "Country: " + areaName, Toast.LENGTH_SHORT).show();
+        Intent intent = MealsListActivity.createIntent(
+                getContext(),
+                MealsListActivity.FILTER_AREA,
+                areaName
+        );
+        startActivity(intent);
     }
 
     @Override
