@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment implements HomeView {
         initViews(view);
         setupRecyclerViews();
         setupListeners();
-        presenter = new HomePresenterImpl(this);
+        presenter = new HomePresenterImpl(this, requireContext());
         presenter.loadAllData();
     }
 

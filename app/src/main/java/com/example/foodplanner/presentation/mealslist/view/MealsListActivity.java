@@ -87,7 +87,7 @@ public class MealsListActivity extends AppCompatActivity implements MealsListVie
     }
 
     private void initPresenter() {
-        presenter = new MealsListPresenterImpl(this);
+        presenter = new MealsListPresenterImpl(this, this);
     }
 
     private void loadData() {

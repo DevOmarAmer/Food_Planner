@@ -1,5 +1,6 @@
 package com.example.foodplanner.presentation.mealslist.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.foodplanner.data.model.Meal;
@@ -20,9 +21,9 @@ public class MealsListPresenterImpl implements MealsListPresenter {
     private final MealRepository repository;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public MealsListPresenterImpl(MealsListView view) {
+    public MealsListPresenterImpl(MealsListView view, Context context) {
         this.view = view;
-        this.repository = MealRepository.getInstance();
+        this.repository = MealRepository.getInstance(context);
     }
 
     @Override

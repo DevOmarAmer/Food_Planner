@@ -83,7 +83,7 @@ public class SearchFragment extends Fragment implements SearchView {
         setupSearch();
         showTabContent(TAB_CATEGORIES);
         
-        presenter = new SearchPresenterImpl(this);
+        presenter = new SearchPresenterImpl(this, requireContext());
         loadInitialData();
     }
 

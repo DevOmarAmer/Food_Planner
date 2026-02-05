@@ -1,5 +1,6 @@
 package com.example.foodplanner.presentation.search;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.foodplanner.data.model.Area;
@@ -20,9 +21,9 @@ public class SearchPresenterImpl implements SearchPresenter {
     private final MealRepository repository;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public SearchPresenterImpl(SearchView view) {
+    public SearchPresenterImpl(SearchView view, Context context) {
         this.view = view;
-        this.repository = MealRepository.getInstance();
+        this.repository = MealRepository.getInstance(context);
     }
 
     @Override

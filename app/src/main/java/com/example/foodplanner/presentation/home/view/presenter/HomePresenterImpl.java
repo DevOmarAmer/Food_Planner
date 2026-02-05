@@ -1,5 +1,6 @@
 package com.example.foodplanner.presentation.home.view.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.foodplanner.data.model.Area;
@@ -19,9 +20,9 @@ public class HomePresenterImpl implements HomePresenter {
     private final MealRepository repository;
     private final CompositeDisposable disposables;
     
-    public HomePresenterImpl(HomeView view) {
+    public HomePresenterImpl(HomeView view, Context context) {
         this.view = view;
-        this.repository = MealRepository.getInstance();
+        this.repository = MealRepository.getInstance(context);
         this.disposables = new CompositeDisposable();
     }
     

@@ -140,7 +140,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     }
 
     private void initPresenter() {
-        presenter = new MealDetailsPresenter(this, MealRepository.getInstance());
+        presenter = new MealDetailsPresenter(this, MealRepository.getInstance(this));
     }
 
     @Override
