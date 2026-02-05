@@ -25,11 +25,12 @@ import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.presentation.home.adapters.AreaAdapter;
 import com.example.foodplanner.presentation.home.adapters.CategoryAdapter;
+import com.example.foodplanner.presentation.home.presenter.HomePresenterImpl;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements HomeContract.View {
+public class HomeFragment extends Fragment implements HomeView {
 
     private SwipeRefreshLayout swipeRefresh;
     private CardView cardMealOfDay;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private RecyclerView rvCategories;
     private RecyclerView rvAreas;
 
-    private HomePresenter presenter;
+    private HomePresenterImpl presenter;
     private CategoryAdapter categoryAdapter;
     private AreaAdapter areaAdapter;
     private Meal currentMealOfDay;
@@ -57,8 +58,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         initViews(view);
         setupRecyclerViews();
         setupListeners();
-        
-        presenter = new HomePresenter(this);
+        presenter = new HomePresenterImpl(this);
         presenter.loadAllData();
     }
 

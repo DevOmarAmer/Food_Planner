@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import android.animation.ValueAnimator;
 import com.example.foodplanner.R;
 import com.example.foodplanner.presentation.onboarding.model.OnboardingItem;
 
@@ -61,6 +62,12 @@ public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.On
 
         void bind(OnboardingItem item) {
             lottieAnimation.setAnimation(item.getLottieRes());
+            
+            if (item.getMaxProgress() < 1.0f) {
+                lottieAnimation.setMaxProgress(item.getMaxProgress());
+                lottieAnimation.setRepeatCount(0);
+            }
+            
             lottieAnimation.playAnimation();
             tvTitle.setText(item.getTitle());
             tvDescription.setText(item.getDescription());

@@ -27,13 +27,14 @@ public class OnboardingPresenterImpl implements OnboardingPresenter {
         onboardingItems.add(new OnboardingItem(
                 "Discover Delicious Recipes",
                 "Explore thousands of mouth-watering recipes from around the world. Find your next favorite dish with our curated collection.",
-                R.raw.manifest
+                R.raw.on_boarding_animation_1
         ));
         
         onboardingItems.add(new OnboardingItem(
                 "Plan Your Weekly Meals",
                 "Organize your meals for the entire week with our smart planner. Save time and eat healthier with structured meal planning.",
-                R.raw.on_boarding_animation_2
+                R.raw.on_boarding_animation_2,
+                0.9f
         ));
         
         onboardingItems.add(new OnboardingItem(

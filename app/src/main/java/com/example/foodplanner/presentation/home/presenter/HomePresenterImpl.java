@@ -1,21 +1,25 @@
-package com.example.foodplanner.presentation.home;
+package com.example.foodplanner.presentation.home.presenter;
+
+import android.util.Log;
 
 import com.example.foodplanner.data.model.Area;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repository.MealRepository;
+import com.example.foodplanner.presentation.home.HomeView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class HomePresenter implements HomeContract.Presenter {
+public class HomePresenterImpl implements HomePresenter {
     
-    private HomeContract.View view;
+    private static final String TAG = "HomePresenter";
+    private HomeView view;
     private final MealRepository repository;
     private final CompositeDisposable disposables;
     
-    public HomePresenter(HomeContract.View view) {
+    public HomePresenterImpl(HomeView view) {
         this.view = view;
         this.repository = MealRepository.getInstance();
         this.disposables = new CompositeDisposable();
@@ -34,8 +38,9 @@ public class HomePresenter implements HomeContract.Presenter {
                                     }
                                 },
                                 error -> {
+                                    Log.e(TAG, "Failed to load random meal: " + error.getMessage(), error);
                                     if (view != null) {
-                                        view.showError("Failed to load meal of the day");
+                                        view.showError("Failed to load meal: " + error.getMessage());
                                     }
                                 }
                         )
@@ -55,8 +60,9 @@ public class HomePresenter implements HomeContract.Presenter {
                                     }
                                 },
                                 error -> {
+                                    Log.e(TAG, "Failed to load categories: " + error.getMessage(), error);
                                     if (view != null) {
-                                        view.showError("Failed to load categories");
+                                        view.showError("Categories: " + error.getMessage());
                                     }
                                 }
                         )
@@ -76,8 +82,9 @@ public class HomePresenter implements HomeContract.Presenter {
                                     }
                                 },
                                 error -> {
+                                    Log.e(TAG, "Failed to load areas: " + error.getMessage(), error);
                                     if (view != null) {
-                                        view.showError("Failed to load countries");
+                                        view.showError("Countries: " + error.getMessage());
                                     }
                                 }
                         )

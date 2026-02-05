@@ -6,9 +6,9 @@ import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 
-public interface HomeContract {
+
     
-    interface View {
+    public interface HomeView {
         void showLoading();
         void hideLoading();
         void showRandomMeal(Meal meal);
@@ -20,14 +20,6 @@ public interface HomeContract {
         void navigateToArea(String areaName);
     }
     
-    interface Presenter {
-        void loadRandomMeal();
-        void loadCategories();
-        void loadAreas();
-        void loadAllData();
-        void onMealClicked(Meal meal);
-        void onCategoryClicked(Category category);
-        void onAreaClicked(Area area);
-        void onDestroy();
-    }
-}
+
+
+
