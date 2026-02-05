@@ -97,7 +97,9 @@ public class SearchPresenterImpl implements SearchPresenter {
             return;
         }
 
-        view.showLoading();
+        if (view != null) {
+            view.showLoading();
+        }
 
         disposables.add(
                 repository.searchMealsByName(query.trim())

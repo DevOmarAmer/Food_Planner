@@ -2,6 +2,8 @@ package com.example.foodplanner.presentation.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 
 public class SearchFragment extends Fragment implements SearchView {
 
@@ -57,6 +64,8 @@ public class SearchFragment extends Fragment implements SearchView {
     private MealsAdapter searchResultsAdapter;
 
     private boolean isSearchMode = false;
+    private final PublishSubject<String> searchSubject = PublishSubject.create();
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Nullable
     @Override
@@ -72,6 +81,7 @@ public class SearchFragment extends Fragment implements SearchView {
         setupTabs();
         setupRecyclerViews();
         setupSearch();
+        showTabContent(TAB_CATEGORIES);
         
         presenter = new SearchPresenterImpl(this);
         loadInitialData();
@@ -133,6 +143,34 @@ public class SearchFragment extends Fragment implements SearchView {
     }
 
     private void setupSearch() {
+        disposables.add(
+                searchSubject
+                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .distinctUntilChanged()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(query -> {
+                            if (query.isEmpty()) {
+                                exitSearchMode();
+                            } else {
+                                isSearchMode = true;
+                                presenter.searchMeals(query);
+                            }
+                        })
+        );
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchSubject.onNext(s.toString().trim());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch();
@@ -156,7 +194,8 @@ public class SearchFragment extends Fragment implements SearchView {
         isSearchMode = false;
         rvSearchResults.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.GONE);
-        showTabContent(tabLayout.getSelectedTabPosition());
+        int position = tabLayout.getSelectedTabPosition();
+        showTabContent(position >= 0 ? position : TAB_CATEGORIES);
     }
 
     private void loadInitialData() {
@@ -240,6 +279,7 @@ public class SearchFragment extends Fragment implements SearchView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        disposables.clear();
         if (presenter != null) {
             presenter.onDestroy();
         }

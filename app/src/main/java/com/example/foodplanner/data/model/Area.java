@@ -2,11 +2,7 @@ package com.example.foodplanner.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Area - Data model for countries/areas from TheMealDB API
- * 
- * API Endpoint: www.themealdb.com/api/json/v1/1/list.php?a=list
- */
+
 public class Area {
     
     @SerializedName("strArea")
