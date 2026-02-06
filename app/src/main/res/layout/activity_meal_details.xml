@@ -119,6 +119,18 @@
 
             </LinearLayout>
 
+            <!-- Video Section -->
+            <TextView
+                android:id="@+id/tvVideoTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watch Video"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardVideo"
                 android:layout_width="match_parent"
@@ -128,27 +140,10 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
-                <FrameLayout
+                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                    android:id="@+id/youtubePlayerView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
-
-                    <ImageView
-                        android:id="@+id/ivVideoThumbnail"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="Video thumbnail" />
-
-                    <ImageView
-                        android:id="@+id/ivPlayButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_play_circle"
-                        app:tint="@color/white"
-                        android:contentDescription="Play video" />
-
-                </FrameLayout>
+                    android:layout_height="wrap_content" />
 
             </com.google.android.material.card.MaterialCardView>
 

@@ -1,14 +1,12 @@
 package com.example.foodplanner.presentation.mealdetails;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +21,9 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +45,8 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     private FloatingActionButton fabFavorite;
     private ExtendedFloatingActionButton fabAddToPlan;
     private MaterialCardView cardVideo;
-    private ImageView ivVideoThumbnail;
-    private ImageView ivPlayButton;
+    private TextView tvVideoTitle;
+    private YouTubePlayerView youtubePlayerView;
     private Toolbar toolbar;
 
     private Meal currentMeal;
@@ -87,9 +88,20 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         fabFavorite = findViewById(R.id.fabFavorite);
         fabAddToPlan = findViewById(R.id.fabAddToPlan);
         cardVideo = findViewById(R.id.cardVideo);
-        ivVideoThumbnail = findViewById(R.id.ivVideoThumbnail);
-        ivPlayButton = findViewById(R.id.ivPlayButton);
+        tvVideoTitle = findViewById(R.id.tvVideoTitle);
+        youtubePlayerView = findViewById(R.id.youtubePlayerView);
         toolbar = findViewById(R.id.toolbar);
+        
+        getLifecycle().addObserver(youtubePlayerView);
+    }
+
+    private void loadYouTubeVideo(String videoId) {
+        youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                youTubePlayer.cueVideo(videoId, 0);
+            }
+        });
     }
 
     private void setupToolbar() {
@@ -116,13 +128,6 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         fabAddToPlan.setOnClickListener(v -> {
             if (currentMeal != null) {
                 showDayPickerDialog();
-            }
-        });
-
-        cardVideo.setOnClickListener(v -> {
-            if (currentMeal != null && currentMeal.getYoutubeUrl() != null) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentMeal.getYoutubeUrl()));
-                startActivity(intent);
             }
         });
     }
@@ -178,16 +183,17 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         ingredientAdapter.setIngredients(ingredientItems);
 
         if (meal.getYoutubeUrl() != null && !meal.getYoutubeUrl().isEmpty()) {
-            cardVideo.setVisibility(View.VISIBLE);
             String videoId = meal.getYoutubeVideoId();
-            if (videoId != null) {
-                String thumbnailUrl = "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
-                Glide.with(this)
-                        .load(thumbnailUrl)
-                        .placeholder(R.drawable.placeholder_food)
-                        .into(ivVideoThumbnail);
+            if (videoId != null && !videoId.isEmpty()) {
+                tvVideoTitle.setVisibility(View.VISIBLE);
+                cardVideo.setVisibility(View.VISIBLE);
+                loadYouTubeVideo(videoId);
+            } else {
+                tvVideoTitle.setVisibility(View.GONE);
+                cardVideo.setVisibility(View.GONE);
             }
         } else {
+            tvVideoTitle.setVisibility(View.GONE);
             cardVideo.setVisibility(View.GONE);
         }
 

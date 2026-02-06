@@ -8,11 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Meal - Data model for meal information from TheMealDB API
- * 
- * API Endpoint: www.themealdb.com/api/json/v1/1/lookup.php?i={id}
- */
+
 @Entity(tableName = "meals")
 public class Meal {
     
@@ -234,9 +230,7 @@ public class Meal {
     public void setMeasure19(String measure19) { this.measure19 = measure19; }
     public void setMeasure20(String measure20) { this.measure20 = measure20; }
     
-    /**
-     * Get all ingredients as a list (filters out empty values)
-     */
+
     public java.util.List<String> getIngredientsList() {
         java.util.List<String> ingredients = new java.util.ArrayList<>();
         addIfNotEmpty(ingredients, ingredient1);
@@ -262,9 +256,7 @@ public class Meal {
         return ingredients;
     }
     
-    /**
-     * Get all measures as a list
-     */
+
     public java.util.List<String> getMeasuresList() {
         java.util.List<String> measures = new java.util.ArrayList<>();
         addIfNotEmpty(measures, measure1);
@@ -296,14 +288,11 @@ public class Meal {
         }
     }
     
-    /**
-     * Get YouTube video ID from URL
-     */
+
     public String getYoutubeVideoId() {
         if (youtubeUrl == null || youtubeUrl.isEmpty()) {
             return null;
         }
-        // YouTube URL format: https://www.youtube.com/watch?v=VIDEO_ID
         String[] parts = youtubeUrl.split("v=");
         if (parts.length > 1) {
             String videoId = parts[1];
