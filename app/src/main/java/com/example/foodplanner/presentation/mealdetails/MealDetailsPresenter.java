@@ -12,6 +12,7 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
     private MealDetailsContract.View view;
     private final MealRepository repository;
     private final CompositeDisposable disposables = new CompositeDisposable();
+    private boolean isFavorite = false;
 
     public MealDetailsPresenter(MealDetailsContract.View view, MealRepository repository) {
         this.view = view;
@@ -41,7 +42,33 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
 
     @Override
     public void toggleFavorite(Meal meal) {
-        view.showAddedToFavorites();
+        if (isFavorite) {
+            disposables.add(
+                    repository.removeFromFavorites(meal)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    () -> {
+                                        isFavorite = false;
+                                        view.showRemovedFromFavorites();
+                                    },
+                                    throwable -> view.showError(throwable.getMessage())
+                            )
+            );
+        } else {
+            disposables.add(
+                    repository.addToFavorites(meal)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    () -> {
+                                        isFavorite = true;
+                                        view.showAddedToFavorites();
+                                    },
+                                    throwable -> view.showError(throwable.getMessage())
+                            )
+            );
+        }
     }
 
     @Override
@@ -51,7 +78,18 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
 
     @Override
     public void checkFavoriteStatus(String mealId) {
-        view.showFavoriteStatus(false);
+        disposables.add(
+                repository.isFavorite(mealId)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                isFav -> {
+                                    isFavorite = isFav;
+                                    view.showFavoriteStatus(isFav);
+                                },
+                                throwable -> view.showFavoriteStatus(false)
+                        )
+        );
     }
 
     @Override

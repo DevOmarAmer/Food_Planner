@@ -94,7 +94,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        findViewById(R.id.btnBack).setOnClickListener(v -> onBackPressed());
     }
 
     private void setupRecyclerView() {
