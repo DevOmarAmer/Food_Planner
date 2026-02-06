@@ -29,4 +29,10 @@
         android:label="@string/nav_plan"
         tools:layout="@layout/fragment_plan" />
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.foodplanner.presentation.profile.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

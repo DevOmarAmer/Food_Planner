@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ import com.example.foodplanner.presentation.home.adapters.CategoryAdapter;
 import com.example.foodplanner.presentation.home.view.presenter.HomePresenterImpl;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
 import com.example.foodplanner.presentation.mealslist.view.MealsListActivity;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment implements HomeView {
     private TextView tvMealOfDayCategory;
     private RecyclerView rvCategories;
     private RecyclerView rvAreas;
+    private TextInputEditText etSearch;
 
     private HomePresenterImpl presenter;
     private CategoryAdapter categoryAdapter;
@@ -71,6 +74,7 @@ public class HomeFragment extends Fragment implements HomeView {
         tvMealOfDayCategory = view.findViewById(R.id.tvMealOfDayCategory);
         rvCategories = view.findViewById(R.id.rvCategories);
         rvAreas = view.findViewById(R.id.rvAreas);
+        etSearch = view.findViewById(R.id.etSearch);
     }
 
     private void setupRecyclerViews() {
@@ -95,6 +99,10 @@ public class HomeFragment extends Fragment implements HomeView {
 
         categoryAdapter.setOnCategoryClickListener(category -> presenter.onCategoryClicked(category));
         areaAdapter.setOnAreaClickListener(area -> presenter.onAreaClicked(area));
+
+        etSearch.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.searchFragment);
+        });
     }
 
     @Override
