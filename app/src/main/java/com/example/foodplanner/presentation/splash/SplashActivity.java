@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
-import com.example.foodplanner.presentation.auth.view.AuthActivity;
+import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.presentation.home.view.MainActivity;
 import com.example.foodplanner.presentation.onboarding.view.OnboardingActivity;
 import com.example.foodplanner.utils.SharedPrefsHelper;

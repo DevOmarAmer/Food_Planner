@@ -17,7 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.presentation.auth.view.AuthActivity;
+import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;

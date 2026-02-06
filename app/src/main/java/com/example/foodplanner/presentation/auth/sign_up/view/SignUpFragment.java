@@ -1,6 +1,6 @@
-package com.example.foodplanner.presentation.auth.view;
+package com.example.foodplanner.presentation.auth.sign_up.view;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,40 +8,49 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.Auth.dataSource.local.AuthLocalDataSource;
+import com.example.foodplanner.data.Auth.dataSource.local.AuthLocalDataSourceImpl;
+import com.example.foodplanner.data.Auth.dataSource.remote.AuthRemoteDataSource;
+import com.example.foodplanner.data.Auth.dataSource.remote.AuthRemoteDataSourceImpl;
+import com.example.foodplanner.data.Auth.repository.AuthRepository;
+import com.example.foodplanner.data.Auth.repository.AuthRepositoryImpl;
+import com.example.foodplanner.presentation.auth.sign_up.presenter.SignUpPresenter;
+import com.example.foodplanner.presentation.auth.sign_up.presenter.SignUpPresenterImpl;
+import com.example.foodplanner.presentation.home.view.MainActivity;
+import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment implements SignUpView{
     
     private TextInputLayout tilName, tilEmail, tilPassword, tilConfirmPassword;
     private TextInputEditText etName, etEmail, etPassword, etConfirmPassword;
     private Button btnSignUp;
     private TextView tvLogin;
     private ProgressBar progressBar;
-    
-    private OnSignUpInteractionListener listener;
-    
+    private SignUpPresenter presenter;
 
 
-    
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof OnSignUpInteractionListener) {
-            listener = (OnSignUpInteractionListener) context;
-        } else {
-            throw new RuntimeException(context + " must implement OnSignUpInteractionListener");
-        }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPrefsHelper sharedPrefsHelper = SharedPrefsHelper.getInstance(requireContext());
+        AuthLocalDataSource localDataSource = new AuthLocalDataSourceImpl(sharedPrefsHelper);
+        AuthRemoteDataSource remoteDataSource = new AuthRemoteDataSourceImpl();
+        AuthRepository authRepository = new AuthRepositoryImpl(remoteDataSource, localDataSource);
+        presenter = new SignUpPresenterImpl(this, authRepository );
     }
-    
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -106,15 +115,14 @@ public class SignUpFragment extends Fragment {
                 isValid = false;
             }
             
-            if (isValid && listener != null) {
-                listener.onSignUpClicked(name, email, password);
+            if (isValid) {
+
+                presenter.signUp(name, email, password);
             }
         });
         
         tvLogin.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onNavigateToLogin();
-            }
+          Navigation.findNavController(requireView()).navigate(R.id.action_signUpFragment_to_loginFragment);
         });
     }
     
@@ -133,10 +141,28 @@ public class SignUpFragment extends Fragment {
             Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void showSuccess(String message) {
+        navigateToHome();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+    }
+    public void navigateToHome() {
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
+    }
+
+    @Override
+    public void onSignUpSuccess() {
+
+    }
     
     @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onDestroy();
     }
 }

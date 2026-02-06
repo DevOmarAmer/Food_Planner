@@ -7,14 +7,16 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.PlannedMeal;
 
-@Database(entities = {Meal.class}, version = 1, exportSchema = false)
+@Database(entities = {Meal.class, PlannedMeal.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     
     private static final String DATABASE_NAME = "food_planner_db";
     private static volatile AppDatabase instance;
     
     public abstract MealDao mealDao();
+    public abstract PlannedMealDao plannedMealDao();
     
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {

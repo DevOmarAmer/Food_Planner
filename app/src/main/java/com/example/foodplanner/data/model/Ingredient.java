@@ -2,11 +2,7 @@ package com.example.foodplanner.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Ingredient - Data model for ingredients from TheMealDB API
- * 
- * API Endpoint: www.themealdb.com/api/json/v1/1/list.php?i=list
- */
+
 public class Ingredient {
     
     @SerializedName("idIngredient")

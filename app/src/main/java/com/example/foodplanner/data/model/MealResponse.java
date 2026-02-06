@@ -3,9 +3,7 @@ package com.example.foodplanner.data.model;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-/**
- * MealResponse - Wrapper class for API responses containing meals
- */
+
 public class MealResponse {
     
     @SerializedName("meals")

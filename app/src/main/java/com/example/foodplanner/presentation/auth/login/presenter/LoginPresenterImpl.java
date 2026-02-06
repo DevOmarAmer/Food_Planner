@@ -1,16 +1,16 @@
-package com.example.foodplanner.presentation.auth.presenter;
+package com.example.foodplanner.presentation.auth.login.presenter;
 
 import com.example.foodplanner.data.Auth.repository.AuthCallback;
 import com.example.foodplanner.data.Auth.repository.AuthRepository;
-import com.example.foodplanner.presentation.auth.view.AuthView;
+import com.example.foodplanner.presentation.auth.login.view.LoginView;
 
-public class AuthPresenterImpl implements AuthPresenter {
-    
-    private AuthView view;
+public class LoginPresenterImpl implements LoginPresenter {
+
+    private LoginView view;
     private final AuthRepository authRepository;
     private final String webClientId;
-    
-    public AuthPresenterImpl(AuthView view, AuthRepository authRepository, String webClientId) {
+
+    public LoginPresenterImpl(LoginView view, AuthRepository authRepository, String webClientId) {
         this.view = view;
         this.authRepository = authRepository;
         this.webClientId = webClientId;
@@ -36,7 +36,7 @@ public class AuthPresenterImpl implements AuthPresenter {
                     view.hideLoading();
                     view.showSuccess("Welcome back!");
                     view.onLoginSuccess();
-                    view.navigateToHome();
+
                 }
             }
             
@@ -50,49 +50,13 @@ public class AuthPresenterImpl implements AuthPresenter {
         });
     }
     
-    @Override
-    public void signUp(String name, String email, String password) {
-        if (name == null || name.trim().isEmpty()) {
-            view.showError("Please enter your name");
-            return;
-        }
-        if (email == null || email.trim().isEmpty()) {
-            view.showError("Please enter your email");
-            return;
-        }
-        if (password == null || password.length() < 6) {
-            view.showError("Password must be at least 6 characters");
-            return;
-        }
-        
-        view.showLoading();
-        
-        authRepository.signUp(name, email, password, new AuthCallback() {
-            @Override
-            public void onSuccess(String userId, String email, String displayName) {
-                if (view != null) {
-                    view.hideLoading();
-                    view.showSuccess("Account created successfully!");
-                    view.onSignUpSuccess();
-                    view.navigateToHome();
-                }
-            }
-            
-            @Override
-            public void onError(String errorMessage) {
-                if (view != null) {
-                    view.hideLoading();
-                    view.showError(errorMessage);
-                }
-            }
-        });
-    }
+
     
     @Override
     public void continueAsGuest() {
         authRepository.continueAsGuest();
         view.showSuccess("Continuing as guest");
-        view.navigateToHome();
+
     }
     
     @Override
@@ -111,7 +75,7 @@ public class AuthPresenterImpl implements AuthPresenter {
                 if (view != null) {
                     view.hideLoading();
                     view.showSuccess("Signed in with Google");
-                    view.navigateToHome();
+                    view.onLoginSuccess();
                 }
             }
             

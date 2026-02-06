@@ -2,11 +2,7 @@ package com.example.foodplanner.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Category - Data model for meal categories from TheMealDB API
- * 
- * API Endpoint: www.themealdb.com/api/json/v1/1/categories.php
- */
+
 public class Category {
     
     @SerializedName("idCategory")

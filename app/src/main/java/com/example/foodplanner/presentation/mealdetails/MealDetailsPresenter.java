@@ -73,7 +73,15 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
 
     @Override
     public void addToPlan(Meal meal, String day) {
-        view.showAddedToPlan(day);
+        disposables.add(
+                repository.addToPlan(meal, day)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> view.showAddedToPlan(day),
+                                throwable -> view.showError(throwable.getMessage())
+                        )
+        );
     }
 
     @Override

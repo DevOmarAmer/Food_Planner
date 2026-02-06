@@ -3,11 +3,13 @@ package com.example.foodplanner.data.repository;
 import android.content.Context;
 
 import com.example.foodplanner.data.datasource.local.MealLocalDataSource;
+import com.example.foodplanner.data.datasource.local.PlannedMealLocalDataSource;
 import com.example.foodplanner.data.datasource.remote.MealRemoteDataSource;
 import com.example.foodplanner.data.model.Area;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.PlannedMeal;
 
 import java.util.List;
 
@@ -20,10 +22,12 @@ public class MealRepository {
     private static MealRepository instance;
     private final MealRemoteDataSource remoteDataSource;
     private final MealLocalDataSource localDataSource;
+    private final PlannedMealLocalDataSource plannedMealLocalDataSource;
     
     private MealRepository(Context context) {
         remoteDataSource = MealRemoteDataSource.getInstance();
         localDataSource = MealLocalDataSource.getInstance(context);
+        plannedMealLocalDataSource = PlannedMealLocalDataSource.getInstance(context);
     }
     
     public static synchronized MealRepository getInstance(Context context) {
@@ -111,5 +115,39 @@ public class MealRepository {
     
     public Flowable<List<Meal>> getFavoritesByArea(String area) {
         return localDataSource.getMealsByArea(area);
+    }
+    
+    // Planned Meals methods
+    public Completable addToPlan(Meal meal, String day) {
+        PlannedMeal plannedMeal = new PlannedMeal(meal, day);
+        return plannedMealLocalDataSource.insertPlannedMeal(plannedMeal);
+    }
+    
+    public Completable removeFromPlan(PlannedMeal plannedMeal) {
+        return plannedMealLocalDataSource.deletePlannedMeal(plannedMeal);
+    }
+    
+    public Completable removeFromPlanById(String id) {
+        return plannedMealLocalDataSource.deletePlannedMealById(id);
+    }
+    
+    public Flowable<List<PlannedMeal>> getAllPlannedMeals() {
+        return plannedMealLocalDataSource.getAllPlannedMeals();
+    }
+    
+    public Flowable<List<PlannedMeal>> getPlannedMealsByDay(String day) {
+        return plannedMealLocalDataSource.getPlannedMealsByDay(day);
+    }
+    
+    public Single<Boolean> isMealPlannedForDay(String mealId, String day) {
+        return plannedMealLocalDataSource.isMealPlannedForDay(mealId, day);
+    }
+    
+    public Completable clearAllPlannedMeals() {
+        return plannedMealLocalDataSource.deleteAllPlannedMeals();
+    }
+    
+    public Completable clearDayPlan(String day) {
+        return plannedMealLocalDataSource.clearDayPlan(day);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.foodplanner.presentation.onboarding.view;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.presentation.auth.view.AuthActivity;
+import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.presentation.onboarding.model.OnboardingItem;
 import com.example.foodplanner.presentation.onboarding.presenter.OnboardingPresenter;
 import com.example.foodplanner.presentation.onboarding.presenter.OnboardingPresenterImpl;

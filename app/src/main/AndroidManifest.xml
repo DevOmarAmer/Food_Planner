@@ -29,7 +29,7 @@
         
         <!-- Authentication Activity -->
         <activity
-            android:name=".presentation.auth.view.AuthActivity"
+            android:name=".presentation.auth.AuthActivity"
             android:exported="false" />
         
         <!-- Onboarding Activity -->
