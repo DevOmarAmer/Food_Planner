@@ -15,7 +15,12 @@
         android:id="@+id/searchFragment"
         android:name="com.example.foodplanner.presentation.search.SearchFragment"
         android:label="@string/nav_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <argument
+            android:name="initialTab"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoritesFragment"

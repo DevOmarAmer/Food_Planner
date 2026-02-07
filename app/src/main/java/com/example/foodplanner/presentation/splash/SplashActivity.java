@@ -21,7 +21,7 @@ import com.example.foodplanner.utils.SharedPrefsHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DURATION = 3000; // 3 seconds
+    private static final int SPLASH_DURATION = 3000;
     
     private LottieAnimationView lottieAnimationView;
     private TextView tvAppName;

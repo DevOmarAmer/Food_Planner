@@ -44,9 +44,10 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 
 public class SearchFragment extends Fragment implements SearchView {
 
-    private static final int TAB_CATEGORIES = 0;
-    private static final int TAB_COUNTRIES = 1;
-    private static final int TAB_INGREDIENTS = 2;
+    public static final String ARG_INITIAL_TAB = "initialTab";
+    public static final int TAB_CATEGORIES = 0;
+    public static final int TAB_COUNTRIES = 1;
+    public static final int TAB_INGREDIENTS = 2;
 
     private MaterialToolbar toolbar;
     private TextInputEditText etSearch;
@@ -83,7 +84,14 @@ public class SearchFragment extends Fragment implements SearchView {
         setupTabs();
         setupRecyclerViews();
         setupSearch();
-        showTabContent(TAB_CATEGORIES);
+        
+        int initialTab = getArguments() != null ? getArguments().getInt(ARG_INITIAL_TAB, TAB_CATEGORIES) : TAB_CATEGORIES;
+        if (initialTab >= 0 && initialTab <= TAB_INGREDIENTS) {
+            tabLayout.selectTab(tabLayout.getTabAt(initialTab));
+            showTabContent(initialTab);
+        } else {
+            showTabContent(TAB_CATEGORIES);
+        }
         
         presenter = new SearchPresenterImpl(this, requireContext());
         loadInitialData();

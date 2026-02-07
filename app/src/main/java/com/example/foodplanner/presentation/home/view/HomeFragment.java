@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.foodplanner.R;
@@ -32,6 +33,7 @@ import com.example.foodplanner.presentation.home.adapters.CategoryAdapter;
 import com.example.foodplanner.presentation.home.view.presenter.HomePresenterImpl;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
 import com.example.foodplanner.presentation.mealslist.view.MealsListActivity;
+import com.example.foodplanner.presentation.search.SearchFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -47,6 +49,8 @@ public class HomeFragment extends Fragment implements HomeView {
     private RecyclerView rvCategories;
     private RecyclerView rvAreas;
     private TextInputEditText etSearch;
+    private TextView tvSeeAllCategories;
+    private TextView tvSeeAllCountries;
 
     private HomePresenterImpl presenter;
     private CategoryAdapter categoryAdapter;
@@ -80,6 +84,8 @@ public class HomeFragment extends Fragment implements HomeView {
         rvCategories = view.findViewById(R.id.rvCategories);
         rvAreas = view.findViewById(R.id.rvAreas);
         etSearch = view.findViewById(R.id.etSearch);
+        tvSeeAllCategories = view.findViewById(R.id.tvSeeAllCategories);
+        tvSeeAllCountries = view.findViewById(R.id.tvSeeAllCountries);
         
         ViewCompat.setOnApplyWindowInsetsListener(contentLayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
@@ -113,6 +119,18 @@ public class HomeFragment extends Fragment implements HomeView {
 
         etSearch.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.searchFragment);
+        });
+
+        tvSeeAllCategories.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putInt(SearchFragment.ARG_INITIAL_TAB, SearchFragment.TAB_CATEGORIES);
+            Navigation.findNavController(v).navigate(R.id.searchFragment, args);
+        });
+
+        tvSeeAllCountries.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putInt(SearchFragment.ARG_INITIAL_TAB, SearchFragment.TAB_COUNTRIES);
+            Navigation.findNavController(v).navigate(R.id.searchFragment, args);
         });
     }
 
