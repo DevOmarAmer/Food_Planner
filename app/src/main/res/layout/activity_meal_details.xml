@@ -140,10 +140,10 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
-                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                    android:id="@+id/youtubePlayerView"
+                <WebView
+                    android:id="@+id/youtubeWebView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="200dp" />
 
             </com.google.android.material.card.MaterialCardView>
 

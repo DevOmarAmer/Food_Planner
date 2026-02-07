@@ -293,16 +293,45 @@ public class Meal {
         if (youtubeUrl == null || youtubeUrl.isEmpty()) {
             return null;
         }
-        String[] parts = youtubeUrl.split("v=");
-        if (parts.length > 1) {
-            String videoId = parts[1];
-            // Remove any additional parameters
-            int ampIndex = videoId.indexOf('&');
-            if (ampIndex != -1) {
-                videoId = videoId.substring(0, ampIndex);
+        
+        String videoId = null;
+        
+        // Handle youtube.com/watch?v=VIDEO_ID format
+        if (youtubeUrl.contains("v=")) {
+            String[] parts = youtubeUrl.split("v=");
+            if (parts.length > 1) {
+                videoId = parts[1];
+                // Remove any additional parameters
+                int ampIndex = videoId.indexOf('&');
+                if (ampIndex != -1) {
+                    videoId = videoId.substring(0, ampIndex);
+                }
             }
-            return videoId;
         }
-        return null;
+        // Handle youtu.be/VIDEO_ID format
+        else if (youtubeUrl.contains("youtu.be/")) {
+            String[] parts = youtubeUrl.split("youtu.be/");
+            if (parts.length > 1) {
+                videoId = parts[1];
+                // Remove any additional parameters
+                int queryIndex = videoId.indexOf('?');
+                if (queryIndex != -1) {
+                    videoId = videoId.substring(0, queryIndex);
+                }
+            }
+        }
+        // Handle youtube.com/embed/VIDEO_ID format
+        else if (youtubeUrl.contains("/embed/")) {
+            String[] parts = youtubeUrl.split("/embed/");
+            if (parts.length > 1) {
+                videoId = parts[1];
+                int queryIndex = videoId.indexOf('?');
+                if (queryIndex != -1) {
+                    videoId = videoId.substring(0, queryIndex);
+                }
+            }
+        }
+        
+        return videoId;
     }
 }

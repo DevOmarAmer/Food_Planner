@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash Screen Theme for Android 12+ -->
+    <style name="Theme.FoodPlanner.Splash" parent="Theme.FoodPlanner">
+        <!-- Splash screen background color -->
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+        
+        <!-- Remove the icon by using a transparent color -->
+        <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+        
+        <!-- Set icon background to transparent (removes the circular background) -->
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_background</item>
+        
+        <!-- Keep status bar and navigation bar colors consistent -->
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:statusBarColor">@color/splash_background</item>
+        <item name="android:navigationBarColor">@color/splash_background</item>
+    </style>
+</resources>

@@ -1,12 +1,20 @@
 package com.example.foodplanner.presentation.mealdetails;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,13 +25,9 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repository.MealRepository;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +48,9 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     private RecyclerView rvIngredients;
     private FloatingActionButton fabFavorite;
     private ExtendedFloatingActionButton fabAddToPlan;
-    private MaterialCardView cardVideo;
+    private View cardVideo;
     private TextView tvVideoTitle;
-    private YouTubePlayerView youtubePlayerView;
+    private WebView youtubeWebView;
     private Toolbar toolbar;
 
     private Meal currentMeal;
@@ -89,19 +93,87 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         fabAddToPlan = findViewById(R.id.fabAddToPlan);
         cardVideo = findViewById(R.id.cardVideo);
         tvVideoTitle = findViewById(R.id.tvVideoTitle);
-        youtubePlayerView = findViewById(R.id.youtubePlayerView);
+        youtubeWebView = findViewById(R.id.youtubeWebView);
         toolbar = findViewById(R.id.toolbar);
         
-        getLifecycle().addObserver(youtubePlayerView);
+        setupWebView();
     }
+    
+    private void setupWebView() {
+        WebSettings webSettings = youtubeWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setAllowFileAccess(true);
+        webSettings.setAllowContentAccess(true);
+        webSettings.setMediaPlaybackRequiresUserGesture(false);
+        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
-    private void loadYouTubeVideo(String videoId) {
-        youtubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        // Important user agent for YouTube compatibility
+        webSettings.setUserAgentString(
+                "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 " +
+                        "Chrome/120.0.0.0 Mobile Safari/537.36"
+        );
+
+        youtubeWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        youtubeWebView.setWebChromeClient(new WebChromeClient());
+
+        youtubeWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                youTubePlayer.cueVideo(videoId, 0);
+            public void onReceivedError(
+                    WebView view,
+                    WebResourceRequest request,
+                    WebResourceError error
+            ) {
+                super.onReceivedError(view, request, error);
+                Log.e("YouTubeWebView", "WebView error, fallback to YouTube app");
+                openYoutubeExternally();
             }
         });
+    }
+    
+    private void loadYouTubeVideo(String videoId) {
+        if (videoId == null || videoId.isEmpty()) {
+            cardVideo.setVisibility(View.GONE);
+            tvVideoTitle.setVisibility(View.GONE);
+            return;
+        }
+
+        cardVideo.setVisibility(View.VISIBLE);
+        tvVideoTitle.setVisibility(View.VISIBLE);
+
+        String html =
+                "<!DOCTYPE html>" +
+                        "<html>" +
+                        "<head>" +
+                        "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                        "<style>" +
+                        "html, body { margin: 0; padding: 0; background: black; width: 100%; height: 100%; }" +
+                        "iframe { width: 100%; height: 100%; border: 0; }" +
+                        "</style>" +
+                        "</head>" +
+                        "<body>" +
+                        "<iframe src='https://www.youtube-nocookie.com/embed/" + videoId +
+                        "?playsinline=1&rel=0' " +
+                        "allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' " +
+                        "allowfullscreen></iframe>" +
+                        "</body>" +
+                        "</html>";
+
+        youtubeWebView.loadDataWithBaseURL(
+                "https://www.youtube-nocookie.com",
+                html,
+                "text/html",
+                "UTF-8",
+                null
+        );
+    }
+    
+    private void openYoutubeExternally() {
+        if (currentMeal != null && currentMeal.getYoutubeUrl() != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentMeal.getYoutubeUrl()));
+            startActivity(intent);
+        }
     }
 
     private void setupToolbar() {
@@ -184,9 +256,9 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
 
         if (meal.getYoutubeUrl() != null && !meal.getYoutubeUrl().isEmpty()) {
             String videoId = meal.getYoutubeVideoId();
+            Log.d("YouTubePlayer", "YouTube URL: " + meal.getYoutubeUrl());
+            Log.d("YouTubePlayer", "Extracted Video ID: " + videoId);
             if (videoId != null && !videoId.isEmpty()) {
-                tvVideoTitle.setVisibility(View.VISIBLE);
-                cardVideo.setVisibility(View.VISIBLE);
                 loadYouTubeVideo(videoId);
             } else {
                 tvVideoTitle.setVisibility(View.GONE);
@@ -231,7 +303,28 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (youtubeWebView != null) {
+            youtubeWebView.onPause();
+            youtubeWebView.pauseTimers();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (youtubeWebView != null) {
+            youtubeWebView.onResume();
+            youtubeWebView.resumeTimers();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
+        if (youtubeWebView != null) {
+            youtubeWebView.destroy();
+        }
         super.onDestroy();
         presenter.onDestroy();
     }

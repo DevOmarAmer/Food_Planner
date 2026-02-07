@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-02-06T15:10:41.900877900Z">
+        <DropdownSelection timestamp="2026-02-07T11:12:12.735868200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ZBOOK FURY\.android\avd\Pixel_7_API_32.avd" />
