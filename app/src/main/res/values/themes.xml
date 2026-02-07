@@ -15,7 +15,7 @@
         <item name="colorSurface">@color/surface</item>
         
         <!-- Status bar -->
-        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 
     <style name="Theme.FoodPlanner" parent="Base.Theme.FoodPlanner" />

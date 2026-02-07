@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.example.foodplanner.data.model.Area;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
@@ -47,6 +48,7 @@ public class SearchFragment extends Fragment implements SearchView {
     private static final int TAB_COUNTRIES = 1;
     private static final int TAB_INGREDIENTS = 2;
 
+    private MaterialToolbar toolbar;
     private TextInputEditText etSearch;
     private TabLayout tabLayout;
     private ProgressBar progressBar;
@@ -88,6 +90,7 @@ public class SearchFragment extends Fragment implements SearchView {
     }
 
     private void initViews(View view) {
+        toolbar = view.findViewById(R.id.toolbar);
         etSearch = view.findViewById(R.id.etSearch);
         tabLayout = view.findViewById(R.id.tabLayout);
         progressBar = view.findViewById(R.id.progressBar);
@@ -97,6 +100,12 @@ public class SearchFragment extends Fragment implements SearchView {
         rvSearchResults = view.findViewById(R.id.rvSearchResults);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
         tvEmptyMessage = view.findViewById(R.id.tvEmptyMessage);
+
+        toolbar.setNavigationOnClickListener(v -> {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void setupTabs() {

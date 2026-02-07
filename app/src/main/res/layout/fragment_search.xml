@@ -10,40 +10,64 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/primary"
+        android:fitsSystemWindows="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="@color/white"
         app:title="Search"
         app:titleTextColor="@color/white" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilSearch"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        app:boxCornerRadiusBottomEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusTopStart="24dp"
-        app:endIconMode="clear_text"
-        app:hintEnabled="false"
+        app:cardBackgroundColor="@color/surface"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:startIconDrawable="@drawable/ic_search">
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="1dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etSearch"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilSearch"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search for meals..."
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:maxLines="1" />
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxCornerRadiusBottomEnd="28dp"
+            app:boxCornerRadiusBottomStart="28dp"
+            app:boxCornerRadiusTopEnd="28dp"
+            app:boxCornerRadiusTopStart="28dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/primary"
+            app:hintEnabled="false"
+            app:startIconDrawable="@drawable/ic_search"
+            app:startIconTint="@color/primary">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Search for meals..."
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingVertical="14dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -52,7 +76,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilSearch"
+        app:layout_constraintTop_toBottomOf="@id/cardSearch"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/primary"
         app:tabMode="fixed"

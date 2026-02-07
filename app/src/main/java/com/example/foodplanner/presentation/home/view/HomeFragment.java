@@ -12,6 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +39,7 @@ import java.util.List;
 public class HomeFragment extends Fragment implements HomeView {
 
     private SwipeRefreshLayout swipeRefresh;
+    private View contentLayout;
     private CardView cardMealOfDay;
     private ImageView ivMealOfDay;
     private TextView tvMealOfDayName;
@@ -68,6 +72,7 @@ public class HomeFragment extends Fragment implements HomeView {
 
     private void initViews(View view) {
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
+        contentLayout = view.findViewById(R.id.contentLayout);
         cardMealOfDay = view.findViewById(R.id.cardMealOfDay);
         ivMealOfDay = view.findViewById(R.id.ivMealOfDay);
         tvMealOfDayName = view.findViewById(R.id.tvMealOfDayName);
@@ -75,6 +80,12 @@ public class HomeFragment extends Fragment implements HomeView {
         rvCategories = view.findViewById(R.id.rvCategories);
         rvAreas = view.findViewById(R.id.rvAreas);
         etSearch = view.findViewById(R.id.etSearch);
+        
+        ViewCompat.setOnApplyWindowInsetsListener(contentLayout, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
     }
 
     private void setupRecyclerViews() {

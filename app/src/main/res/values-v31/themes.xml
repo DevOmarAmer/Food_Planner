@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base theme for Android 12+ with primary status bar -->
+    <style name="Base.Theme.FoodPlanner" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="android:statusBarColor">@color/primary</item>
+    </style>
+
     <!-- Splash Screen Theme for Android 12+ -->
     <style name="Theme.FoodPlanner.Splash" parent="Theme.FoodPlanner">
         <!-- Splash screen background color -->
