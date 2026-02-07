@@ -75,14 +75,12 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
         public void bind(Area area) {
             tvAreaName.setText(area.getName());
             String flagUrl = area.getFlagUrl();
-            if (flagUrl != null) {
-                Glide.with(itemView.getContext())
-                        .load(flagUrl)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .placeholder(R.drawable.placeholder_flag)
-                        .error(R.drawable.placeholder_flag)
-                        .into(ivFlag);
-            }
+            Glide.with(itemView.getContext())
+                    .load(flagUrl)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.placeholder_flag)
+                    .error(R.drawable.placeholder_flag)
+                    .into(ivFlag);
         }
     }
 }
