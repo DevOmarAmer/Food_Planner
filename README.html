@@ -1,214 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Planner - README</title>
-    <style>
-        :root {
-            --primary: #34A853;
-            --primary-dark: #2E7D32;
-            --secondary: #F89637;
-            --background: #FAFAFA;
-            --surface: #FFFFFF;
-            --text-primary: #212121;
-            --text-secondary: #757575;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        section {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        
-        h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-        }
-        
-        h3 {
-            color: var(--text-primary);
-            margin: 20px 0 10px;
-        }
-        
-        ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        ul li {
-            padding: 8px 0;
-            padding-left: 24px;
-            position: relative;
-        }
-        
-        ul li::before {
-            content: "✓";
-            color: var(--primary);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-        
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        
-        .tech-badge {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .developer {
-            text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, var(--secondary), #E65100);
-            color: white;
-            border-radius: 12px;
-        }
-        
-        .developer h2 {
-            color: white;
-            border-bottom-color: rgba(255,255,255,0.3);
-        }
-        
-        .developer a {
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-            padding: 12px 24px;
-            background: white;
-            color: var(--secondary);
-            border-radius: 25px;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        
-        .developer a:hover {
-            transform: scale(1.05);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-secondary);
-        }
-    </style>
-</head>
-<body>
-    <header class="hero">
-        <h1>🍽️ Food Planner</h1>
-        <p>Plan Your Meals, Simplify Your Life</p>
-    </header>
-    
-    <div class="container">
-        <section>
-            <h2>📱 About</h2>
-            <p>Food Planner is a modern Android application that helps you discover delicious recipes, plan your weekly meals, and organize your cooking routine. Built with a clean architecture using MVP pattern.</p>
-        </section>
-        
-        <section>
-            <h2>✨ Features</h2>
-            <ul>
-                <li>Discover random meal suggestions daily</li>
-                <li>Browse meals by category and country</li>
-                <li>Search for recipes by name or ingredient</li>
-                <li>Save favorite meals for quick access</li>
-                <li>Plan meals for the entire week</li>
-                <li>Cloud sync with Firebase</li>
-                <li>Offline mode support</li>
-                <li>Dark mode theme</li>
-                <li>Multi-language support (English & Arabic)</li>
-            </ul>
-        </section>
-        
-        <section>
-            <h2>🛠️ Technologies</h2>
-            <div class="tech-stack">
-                <span class="tech-badge">Java</span>
-                <span class="tech-badge">Android SDK</span>
-                <span class="tech-badge">Room Database</span>
-                <span class="tech-badge">Retrofit</span>
-                <span class="tech-badge">RxJava</span>
-                <span class="tech-badge">Firebase Auth</span>
-                <span class="tech-badge">Firestore</span>
-                <span class="tech-badge">Glide</span>
-                <span class="tech-badge">Lottie</span>
-                <span class="tech-badge">Material Design 3</span>
-            </div>
-        </section>
-        
-        <section>
-            <h2>🏗️ Architecture</h2>
-            <h3>MVP Pattern</h3>
-            <p>The app follows the Model-View-Presenter architecture with clean separation of concerns:</p>
-            <ul>
-                <li><strong>Model:</strong> Data layer with Repository pattern</li>
-                <li><strong>View:</strong> Activities and Fragments</li>
-                <li><strong>Presenter:</strong> Business logic and data transformation</li>
-            </ul>
-        </section>
-        
-        <section>
-            <h2>📡 API</h2>
-            <p>This app uses <a href="https://www.themealdb.com/" target="_blank" style="color: var(--primary);">TheMealDB</a> API for meal data.</p>
-        </section>
-        
-        <section class="developer">
-            <h2>👨‍💻 Developer</h2>
-            <p style="font-size: 1.3rem; margin-top: 10px;">Omar Amer</p>
-            <a href="https://devomaramer.github.io/My_Portfolio/" target="_blank">Visit Portfolio →</a>
-        </section>
-    </div>
-    
-    <footer>
-        <p>© 2024 Food Planner. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+# 🍽️ Food Planner
+### Plan Your Meals, Simplify Your Life
+
+---
+
+## 📱 About
+**Food Planner** is a modern Android application that helps you discover delicious recipes, plan your weekly meals, and organize your cooking routine. Built with a clean architecture using the **MVP** pattern.
+
+## ✨ Features
+* ✅ **Discover** random meal suggestions daily.
+* ✅ **Browse** meals by category and country.
+* ✅ **Search** for recipes by name or ingredient.
+* ✅ **Save** favorite meals for quick access.
+* ✅ **Plan** meals for the entire week.
+* ✅ **Cloud Sync** with Firebase.
+* ✅ **Offline Mode** support.
+* ✅ **Dark Mode** theme.
+* ✅ **Multi-language** support (English & Arabic).
+
+## 🛠️ Technologies
+| Category | Tools & Libraries |
+| :--- | :--- |
+| **Language** | Java |
+| **Architecture** | MVP (Model-View-Presenter) |
+| **Networking** | Retrofit, RxJava |
+| **Database** | Room Database, Firestore |
+| **UI/UX** | Material Design 3, Glide, Lottie |
+| **Auth** | Firebase Authentication |
+
+## 🏗️ Architecture
+The app follows the **MVP** pattern with a clean separation of concerns:
+* **Model:** Data layer with Repository pattern.
+* **View:** Activities and Fragments.
+* **Presenter:** Business logic and data transformation.
+
+
+
+## 📡 API
+This app uses [TheMealDB](https://www.themealdb.com/) API for meal data.
+
+---
+
+## 👨‍💻 Developer
+**Omar Amer** Mid-Level Flutter Developer & ITI Scholar
+
+[Visit My Portfolio →](https://devomaramer.github.io/My_Portfolio/)
+
+---
+© 2024 Food Planner. All rights reserved.
