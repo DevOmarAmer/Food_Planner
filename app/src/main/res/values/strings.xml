@@ -146,4 +146,23 @@
 
     <string name="password_reset_email_sent">Password reset email sent successfully</string>
     <string name="profile_avatar">Profile Avatar</string>
+    
+    <!-- Plan Screen Enhancement -->
+    <string name="day_sat">Sat</string>
+    <string name="day_sun">Sun</string>
+    <string name="day_mon">Mon</string>
+    <string name="day_tue">Tue</string>
+    <string name="day_wed">Wed</string>
+    <string name="day_thu">Thu</string>
+    <string name="day_fri">Fri</string>
+    <string name="today">Today</string>
+    <string name="previous_week">Previous week</string>
+    <string name="next_week">Next week</string>
+    <string name="no_meals_planned">No Meals Planned</string>
+    <string name="plan_empty_subtitle">Start adding meals to organize your week</string>
+    <string name="browse_meals">Browse Meals</string>
+    <string name="continue_browsing">Continue Browsing</string>
+    <string name="remove_from_plan">Remove from plan</string>
+    <string name="meals_count">%d meals</string>
+    <string name="one_meal">1 meal</string>
 </resources>

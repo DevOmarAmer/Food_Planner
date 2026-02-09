@@ -99,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
             navController = navHostFragment.getNavController();
             bottomNavigationView = findViewById(R.id.bottom_navigation);
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            navController.addOnDestinationChangedListener( (controller, destination, arguments) -> {
+                if (destination.getId() == R.id.searchFragment) {
+                    bottomNavigationView.setVisibility(View.GONE);
+                } else {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                }
+            }
+);
         }
     }
     
