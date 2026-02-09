@@ -82,9 +82,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.7")
     
     // Room Database
-    implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-rxjava3:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
+
 
     // YouTube Player (for in-app video playback)
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")

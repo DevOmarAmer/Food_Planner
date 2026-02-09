@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.presentation.favorites.presenter.FavoritesPresenter;
 import com.example.foodplanner.presentation.favorites.presenter.FavoritesPresenterImpl;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
+import com.example.foodplanner.utils.SharedPrefsHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -29,9 +32,12 @@ public class FavoritesFragment extends Fragment implements FavoritesView {
     private ProgressBar progressBar;
     private RecyclerView rvFavorites;
     private LinearLayout layoutEmpty;
+    private LinearLayout layoutGuestPrompt;
+    private MaterialButton btnSignIn;
 
     private FavoritesPresenter presenter;
     private FavoritesAdapter adapter;
+    private SharedPrefsHelper sharedPrefsHelper;
 
     @Nullable
     @Override
@@ -43,16 +49,44 @@ public class FavoritesFragment extends Fragment implements FavoritesView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedPrefsHelper = SharedPrefsHelper.getInstance(requireContext());
         initViews(view);
         setupRecyclerView();
-        presenter = new FavoritesPresenterImpl(this, requireContext());
-        presenter.loadFavorites();
+        
+       
+        if (sharedPrefsHelper.isGuest()) {
+            showGuestPrompt();
+        } else {
+            presenter = new FavoritesPresenterImpl(this, requireContext());
+            presenter.loadFavorites();
+        }
     }
 
     private void initViews(View view) {
         progressBar = view.findViewById(R.id.progressBar);
         rvFavorites = view.findViewById(R.id.rvFavorites);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
+        layoutGuestPrompt = view.findViewById(R.id.layoutGuestPrompt);
+        btnSignIn = view.findViewById(R.id.btnSignIn);
+        
+        
+        if (btnSignIn != null) {
+            btnSignIn.setOnClickListener(v -> navigateToAuth());
+        }
+    }
+    
+    private void showGuestPrompt() {
+        progressBar.setVisibility(View.GONE);
+        rvFavorites.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.GONE);
+        layoutGuestPrompt.setVisibility(View.VISIBLE);
+    }
+    
+    private void navigateToAuth() {
+        Intent intent = new Intent(requireContext(), AuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
 
     private void setupRecyclerView() {
@@ -77,6 +111,7 @@ public class FavoritesFragment extends Fragment implements FavoritesView {
         progressBar.setVisibility(View.VISIBLE);
         rvFavorites.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.GONE);
+        layoutGuestPrompt.setVisibility(View.GONE);
     }
 
     @Override
@@ -88,6 +123,7 @@ public class FavoritesFragment extends Fragment implements FavoritesView {
     public void showFavorites(List<Meal> meals) {
         rvFavorites.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
+        layoutGuestPrompt.setVisibility(View.GONE);
         adapter.setMeals(meals);
     }
 
@@ -95,6 +131,7 @@ public class FavoritesFragment extends Fragment implements FavoritesView {
     public void showEmpty() {
         rvFavorites.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.VISIBLE);
+        layoutGuestPrompt.setVisibility(View.GONE);
     }
 
     @Override
@@ -120,6 +157,8 @@ public class FavoritesFragment extends Fragment implements FavoritesView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        presenter.onDestroy();
+        if (presenter != null) {
+            presenter.onDestroy();
+        }
     }
 }

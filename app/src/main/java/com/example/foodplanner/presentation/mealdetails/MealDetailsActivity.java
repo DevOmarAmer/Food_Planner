@@ -24,12 +24,17 @@ import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repository.MealRepository;
+import com.example.foodplanner.presentation.auth.AuthActivity;
+import com.example.foodplanner.utils.CalendarHelper;
+import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MealDetailsActivity extends AppCompatActivity implements MealDetailsContract.View {
@@ -47,19 +52,25 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     private TextView tvInstructions;
     private RecyclerView rvIngredients;
     private FloatingActionButton fabFavorite;
+    private FloatingActionButton fabAddToCalendar;
     private ExtendedFloatingActionButton fabAddToPlan;
     private View cardVideo;
     private TextView tvVideoTitle;
     private WebView youtubeWebView;
     private Toolbar toolbar;
+    
+    private static final int CALENDAR_PERMISSION_REQUEST_CODE = 100;
 
     private Meal currentMeal;
     private boolean isFavorite = false;
+    private SharedPrefsHelper sharedPrefsHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_details);
+        
+        sharedPrefsHelper = SharedPrefsHelper.getInstance(this);
 
         initViews();
         setupToolbar();
@@ -91,6 +102,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         rvIngredients = findViewById(R.id.rvIngredients);
         fabFavorite = findViewById(R.id.fabFavorite);
         fabAddToPlan = findViewById(R.id.fabAddToPlan);
+        fabAddToCalendar = findViewById(R.id.fabAddToCalendar);
         cardVideo = findViewById(R.id.cardVideo);
         tvVideoTitle = findViewById(R.id.tvVideoTitle);
         youtubeWebView = findViewById(R.id.youtubeWebView);
@@ -192,16 +204,104 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
 
     private void setupClickListeners() {
         fabFavorite.setOnClickListener(v -> {
+            if (sharedPrefsHelper.isGuest()) {
+                showGuestSignInDialog();
+                return;
+            }
             if (currentMeal != null) {
                 presenter.toggleFavorite(currentMeal);
             }
         });
 
         fabAddToPlan.setOnClickListener(v -> {
+            if (sharedPrefsHelper.isGuest()) {
+                showGuestSignInDialog();
+                return;
+            }
             if (currentMeal != null) {
                 showDayPickerDialog();
             }
         });
+        
+        fabAddToCalendar.setOnClickListener(v -> {
+            if (sharedPrefsHelper.isGuest()) {
+                showGuestSignInDialog();
+                return;
+            }
+            if (currentMeal != null) {
+                showCalendarDatePicker();
+            }
+        });
+    }
+    
+    private void showCalendarDatePicker() {
+        if (!CalendarHelper.hasCalendarPermission(this)) {
+            requestCalendarPermission();
+            return;
+        }
+        
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.select_date)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(selection);
+            
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            
+            boolean success = CalendarHelper.addMealToCalendar(this, currentMeal, year, month, day);
+            
+            if (success) {
+                Toast.makeText(this, R.string.meal_added_to_calendar, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Failed to add to calendar", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        datePicker.show(getSupportFragmentManager(), "date_picker");
+    }
+    
+    private void requestCalendarPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{
+                            android.Manifest.permission.READ_CALENDAR,
+                            android.Manifest.permission.WRITE_CALENDAR
+                    },
+                    CALENDAR_PERMISSION_REQUEST_CODE
+            );
+        }
+    }
+    
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CALENDAR_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, show date picker
+                showCalendarDatePicker();
+            } else {
+                Toast.makeText(this, R.string.calendar_permission_required, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    
+    private void showGuestSignInDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.sign_in_required)
+                .setMessage(R.string.sign_in_to_use_feature)
+                .setPositiveButton(R.string.sign_in, (dialog, which) -> {
+                    Intent intent = new Intent(this, AuthActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void showDayPickerDialog() {

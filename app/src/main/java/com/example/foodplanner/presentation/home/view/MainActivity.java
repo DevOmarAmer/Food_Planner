@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -18,15 +21,22 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.presentation.auth.AuthActivity;
+import com.example.foodplanner.utils.NetworkUtils;
 import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class MainActivity extends AppCompatActivity {
 
     private SharedPrefsHelper sharedPrefsHelper;
     private NavController navController;
     private BottomNavigationView bottomNavigationView;
+    private TextView tvOfflineBanner;
+    private NetworkUtils networkUtils;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +51,44 @@ public class MainActivity extends AppCompatActivity {
         });
         
         sharedPrefsHelper = SharedPrefsHelper.getInstance(this);
+        networkUtils = NetworkUtils.getInstance(this);
         
+        initViews();
         setupNavigation();
+        observeNetworkStatus();
+    }
+
+    private void initViews() {
+        tvOfflineBanner = findViewById(R.id.tvOfflineBanner);
+
+        ViewCompat.setOnApplyWindowInsetsListener(tvOfflineBanner, (v, insets) -> {
+            int statusBarHeight = insets
+                    .getInsets(WindowInsetsCompat.Type.statusBars())
+                    .top;
+
+            v.setPadding(
+                    v.getPaddingLeft(),
+                    statusBarHeight + dpToPx(16),
+                    v.getPaddingRight(),
+                    v.getPaddingBottom()
+            );
+            return insets;
+        });
+    }
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
+    
+    private void observeNetworkStatus() {
+        disposables.add(
+            networkUtils.observeNetworkStatus()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isOnline -> {
+                    if (tvOfflineBanner != null) {
+                        tvOfflineBanner.setVisibility(isOnline ? View.GONE : View.VISIBLE);
+                    }
+                })
+        );
     }
     
     private void setupNavigation() {
@@ -93,5 +139,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.clear();
     }
 }

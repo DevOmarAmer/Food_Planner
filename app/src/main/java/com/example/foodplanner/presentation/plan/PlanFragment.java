@@ -17,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.PlannedMeal;
+import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
+import com.example.foodplanner.utils.SharedPrefsHelper;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -27,9 +30,12 @@ public class PlanFragment extends Fragment implements PlanView, PlanAdapter.OnPl
     private RecyclerView rvPlan;
     private ProgressBar progressBar;
     private LinearLayout layoutEmpty;
+    private LinearLayout layoutGuestPrompt;
+    private MaterialButton btnSignIn;
     
     private PlanPresenter presenter;
     private PlanAdapter adapter;
+    private SharedPrefsHelper sharedPrefsHelper;
 
     @Nullable
     @Override
@@ -41,16 +47,44 @@ public class PlanFragment extends Fragment implements PlanView, PlanAdapter.OnPl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sharedPrefsHelper = SharedPrefsHelper.getInstance(requireContext());
         initViews(view);
         setupRecyclerView();
-        presenter = new PlanPresenterImpl(this, requireContext());
-        presenter.loadPlan();
+        
+       
+        if (sharedPrefsHelper.isGuest()) {
+            showGuestPrompt();
+        } else {
+            presenter = new PlanPresenterImpl(this, requireContext());
+            presenter.loadPlan();
+        }
     }
     
     private void initViews(View view) {
         rvPlan = view.findViewById(R.id.rvPlan);
         progressBar = view.findViewById(R.id.progressBar);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
+        layoutGuestPrompt = view.findViewById(R.id.layoutGuestPrompt);
+        btnSignIn = view.findViewById(R.id.btnSignIn);
+        
+        
+        if (btnSignIn != null) {
+            btnSignIn.setOnClickListener(v -> navigateToAuth());
+        }
+    }
+    
+    private void showGuestPrompt() {
+        progressBar.setVisibility(View.GONE);
+        rvPlan.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.GONE);
+        layoutGuestPrompt.setVisibility(View.VISIBLE);
+    }
+    
+    private void navigateToAuth() {
+        Intent intent = new Intent(requireContext(), AuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
     
     private void setupRecyclerView() {
@@ -64,6 +98,7 @@ public class PlanFragment extends Fragment implements PlanView, PlanAdapter.OnPl
         progressBar.setVisibility(View.VISIBLE);
         rvPlan.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.GONE);
+        layoutGuestPrompt.setVisibility(View.GONE);
     }
     
     @Override
@@ -75,6 +110,7 @@ public class PlanFragment extends Fragment implements PlanView, PlanAdapter.OnPl
     public void showPlan(List<PlannedMeal> plannedMeals) {
         rvPlan.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
+        layoutGuestPrompt.setVisibility(View.GONE);
         adapter.setPlannedMeals(plannedMeals);
     }
     
@@ -82,6 +118,7 @@ public class PlanFragment extends Fragment implements PlanView, PlanAdapter.OnPl
     public void showEmpty() {
         rvPlan.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.VISIBLE);
+        layoutGuestPrompt.setVisibility(View.GONE);
     }
     
     @Override

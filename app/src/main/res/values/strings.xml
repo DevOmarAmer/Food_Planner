@@ -96,4 +96,20 @@
     <string name="restore">Restore</string>
     <string name="backup_confirmation">This will upload your favorites and meal plans to the cloud. Continue?</string>
     <string name="restore_confirmation">This will download your data from the cloud. Existing local data will be merged. Continue?</string>
+    
+    <!-- Offline Mode -->
+    <string name="offline_mode_banner">You\'re offline. Showing cached content.</string>
+    
+    <!-- Guest Mode Restrictions -->
+    <string name="sign_in_required">Sign in Required</string>
+    <string name="sign_in_to_use_feature">Please sign in to use this feature</string>
+    <string name="sign_in_to_save_favorites">Sign in to save your favorite meals and access them across devices</string>
+    <string name="sign_in_to_plan_meals">Sign in to plan your meals and sync them across devices</string>
+    <string name="sign_in">Sign In</string>
+    
+    <!-- Calendar Integration -->
+    <string name="add_to_calendar">Add to Calendar</string>
+    <string name="meal_added_to_calendar">Meal added to calendar</string>
+    <string name="select_date">Select Date</string>
+    <string name="calendar_permission_required">Calendar permission is required to add meals</string>
 </resources>
