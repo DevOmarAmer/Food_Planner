@@ -33,6 +33,10 @@ public class PlannedMealLocalDataSource {
         return plannedMealDao.insertPlannedMeal(plannedMeal);
     }
     
+    public Completable insertPlannedMeals(List<PlannedMeal> plannedMeals) {
+        return plannedMealDao.insertPlannedMeals(plannedMeals);
+    }
+    
     public Completable deletePlannedMeal(PlannedMeal plannedMeal) {
         return plannedMealDao.deletePlannedMeal(plannedMeal);
     }

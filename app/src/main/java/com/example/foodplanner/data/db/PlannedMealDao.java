@@ -20,6 +20,9 @@ public interface PlannedMealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertPlannedMeal(PlannedMeal plannedMeal);
     
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertPlannedMeals(List<PlannedMeal> plannedMeals);
+    
     @Delete
     Completable deletePlannedMeal(PlannedMeal plannedMeal);
     

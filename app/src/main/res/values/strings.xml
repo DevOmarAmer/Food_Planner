@@ -83,4 +83,17 @@
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="cancel">Cancel</string>
     <string name="search_hint">Search for meals...</string>
+    
+    <!-- Profile -->
+    <string name="sign_in_to_sync">Sign in to sync data</string>
+    <string name="planned_meals">Planned</string>
+    <string name="cloud_sync">Cloud Sync</string>
+    <string name="backup_to_cloud">Backup to Cloud</string>
+    <string name="backup_description">Upload favorites and meal plans</string>
+    <string name="restore_from_cloud">Restore from Cloud</string>
+    <string name="restore_description">Download your saved data</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backup_confirmation">This will upload your favorites and meal plans to the cloud. Continue?</string>
+    <string name="restore_confirmation">This will download your data from the cloud. Existing local data will be merged. Continue?</string>
 </resources>

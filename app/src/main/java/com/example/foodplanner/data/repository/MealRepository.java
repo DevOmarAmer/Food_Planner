@@ -150,4 +150,9 @@ public class MealRepository {
     public Completable clearDayPlan(String day) {
         return plannedMealLocalDataSource.clearDayPlan(day);
     }
+    
+    // Batch operations for cloud sync
+    public Completable insertPlannedMeals(List<PlannedMeal> plannedMeals) {
+        return plannedMealLocalDataSource.insertPlannedMeals(plannedMeals);
+    }
 }

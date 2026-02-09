@@ -289,6 +289,42 @@ public class Meal {
     }
     
 
+    /**
+     * Sets ingredients from list (used when restoring from Firestore)
+     */
+    public void setIngredientsFromList(List<String> ingredients, List<String> measures) {
+        String[] ingredientFields = new String[20];
+        String[] measureFields = new String[20];
+        
+        for (int i = 0; i < Math.min(ingredients.size(), 20); i++) {
+            ingredientFields[i] = ingredients.get(i);
+        }
+        for (int i = 0; i < Math.min(measures.size(), 20); i++) {
+            measureFields[i] = measures.get(i);
+        }
+        
+        ingredient1 = ingredientFields[0]; measure1 = measureFields[0];
+        ingredient2 = ingredientFields[1]; measure2 = measureFields[1];
+        ingredient3 = ingredientFields[2]; measure3 = measureFields[2];
+        ingredient4 = ingredientFields[3]; measure4 = measureFields[3];
+        ingredient5 = ingredientFields[4]; measure5 = measureFields[4];
+        ingredient6 = ingredientFields[5]; measure6 = measureFields[5];
+        ingredient7 = ingredientFields[6]; measure7 = measureFields[6];
+        ingredient8 = ingredientFields[7]; measure8 = measureFields[7];
+        ingredient9 = ingredientFields[8]; measure9 = measureFields[8];
+        ingredient10 = ingredientFields[9]; measure10 = measureFields[9];
+        ingredient11 = ingredientFields[10]; measure11 = measureFields[10];
+        ingredient12 = ingredientFields[11]; measure12 = measureFields[11];
+        ingredient13 = ingredientFields[12]; measure13 = measureFields[12];
+        ingredient14 = ingredientFields[13]; measure14 = measureFields[13];
+        ingredient15 = ingredientFields[14]; measure15 = measureFields[14];
+        ingredient16 = ingredientFields[15]; measure16 = measureFields[15];
+        ingredient17 = ingredientFields[16]; measure17 = measureFields[16];
+        ingredient18 = ingredientFields[17]; measure18 = measureFields[17];
+        ingredient19 = ingredientFields[18]; measure19 = measureFields[18];
+        ingredient20 = ingredientFields[19]; measure20 = measureFields[19];
+    }
+
     public String getYoutubeVideoId() {
         if (youtubeUrl == null || youtubeUrl.isEmpty()) {
             return null;

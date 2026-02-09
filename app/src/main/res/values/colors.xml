@@ -12,6 +12,7 @@
     <color name="secondary">#F89637</color>
     <color name="secondary_dark">#E65100</color>
     <color name="secondary_light">#FFCC80</color>
+    <color name="accent">#FF5722</color>
     
     <!-- Background Colors -->
     <color name="background">#FAFAFA</color>
