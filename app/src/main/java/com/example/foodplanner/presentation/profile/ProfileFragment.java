@@ -28,6 +28,8 @@ import android.content.pm.PackageManager;
 import com.example.foodplanner.R;
 import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.utils.SharedPrefsHelper;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -71,6 +73,9 @@ public class ProfileFragment extends Fragment implements ProfileView {
     private LinearLayout layoutRateApp;
     private LinearLayout layoutShareApp;
     private LinearLayout layoutPrivacyPolicy;
+
+    // Developer Credit
+    private TextView tvDeveloperLink;
 
     private ProfilePresenter presenter;
     private SharedPrefsHelper sharedPrefsHelper;
@@ -129,6 +134,9 @@ public class ProfileFragment extends Fragment implements ProfileView {
         layoutRateApp = view.findViewById(R.id.layoutRateApp);
         layoutShareApp = view.findViewById(R.id.layoutShareApp);
         layoutPrivacyPolicy = view.findViewById(R.id.layoutPrivacyPolicy);
+
+        // Developer Credit
+        tvDeveloperLink = view.findViewById(R.id.tvDeveloperLink);
 
         // Set app version
         try {
@@ -222,6 +230,9 @@ public class ProfileFragment extends Fragment implements ProfileView {
         layoutRateApp.setOnClickListener(v -> openPlayStore());
         layoutShareApp.setOnClickListener(v -> shareApp());
         layoutPrivacyPolicy.setOnClickListener(v -> openPrivacyPolicy());
+
+        // Developer Credit
+        tvDeveloperLink.setOnClickListener(v -> openDeveloperPortfolio());
     }
 
     private void showUpdateProfileDialog() {
@@ -308,6 +319,12 @@ public class ProfileFragment extends Fragment implements ProfileView {
 
     private void openPrivacyPolicy() {
         String url = getString(R.string.privacy_policy_url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
+    private void openDeveloperPortfolio() {
+        String url = getString(R.string.developer_website);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }

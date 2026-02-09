@@ -10,74 +10,99 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="24dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
-<!--        <com.google.android.material.appbar.MaterialToolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/primary"-->
-<!--            android:fitsSystemWindows="true"-->
-<!--            app:title="@string/nav_profile"-->
-<!--            app:titleTextColor="@color/white" />-->
-
-        <!-- Profile Card -->
-        <androidx.cardview.widget.CardView
+        <!-- Profile Card with Gradient -->
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/ivProfileAvatar"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/circle_decorative"
-                    android:padding="16dp"
-                    android:src="@drawable/ic_person"
-                    app:tint="@color/white"
-                    android:contentDescription="@string/profile_avatar" />
+                <!-- Gradient Background -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_profile_card" />
 
-                <TextView
-                    android:id="@+id/tvUserName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="28dp">
 
-                <TextView
-                    android:id="@+id/tvUserEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
+                    <!-- Profile Avatar with Border -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardAvatar"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        app:cardCornerRadius="48dp"
+                        app:cardElevation="6dp"
+                        app:strokeColor="@color/white"
+                        app:strokeWidth="3dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSignIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/sign_in_to_sync"
-                    android:visibility="gone"
-                    app:cornerRadius="20dp"
-                    style="@style/Widget.Material3.Button.TonalButton" />
+                        <ImageView
+                            android:id="@+id/ivProfileAvatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_person"
+                            android:background="@color/surface_variant"
+                            android:padding="20dp"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@string/profile_avatar" />
 
-            </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:shadowColor="#40000000"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2" />
+
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#DDFFFFFF"
+                        android:textSize="14sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSignIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/sign_in_to_sync"
+                        android:visibility="gone"
+                        android:textColor="@color/primary"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="24dp"
+                        app:elevation="4dp"
+                        style="@style/Widget.Material3.Button" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Statistics Card -->
         <androidx.cardview.widget.CardView
@@ -965,6 +990,31 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+        <!-- Developer Credit Section -->
+        <LinearLayout
+            android:id="@+id/layoutDeveloperCredit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+
+
+            <TextView
+                android:id="@+id/tvDeveloperLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/developed_by"
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
 
         <!-- Logout Button -->
         <com.google.android.material.button.MaterialButton
@@ -972,12 +1022,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
+
             android:text="@string/logout"
             app:cornerRadius="12dp"
             app:icon="@drawable/ic_logout"
             app:iconGravity="textStart"
             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+
 
     </LinearLayout>
 

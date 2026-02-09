@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Bundle;
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.foodplanner.R;
@@ -34,14 +35,23 @@ import com.example.foodplanner.presentation.home.view.presenter.HomePresenterImp
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
 import com.example.foodplanner.presentation.mealslist.view.MealsListActivity;
 import com.example.foodplanner.presentation.search.SearchFragment;
+import com.example.foodplanner.utils.NetworkUtils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class HomeFragment extends Fragment implements HomeView {
 
     private SwipeRefreshLayout swipeRefresh;
     private View contentLayout;
+    private LinearLayout offlineLayout;
+    private LinearLayout onlineContentLayout;
+    private LottieAnimationView lottieOffline;
+    private MaterialButton btnRetry;
     private CardView cardMealOfDay;
     private ImageView ivMealOfDay;
     private TextView tvMealOfDayName;
@@ -56,27 +66,35 @@ public class HomeFragment extends Fragment implements HomeView {
     private CategoryAdapter categoryAdapter;
     private AreaAdapter areaAdapter;
     private Meal currentMealOfDay;
+    private NetworkUtils networkUtils;
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        networkUtils = NetworkUtils.getInstance(requireContext());
         initViews(view);
         setupRecyclerViews();
         setupListeners();
         presenter = new HomePresenterImpl(this, requireContext());
-        presenter.loadAllData();
+
+        observeNetworkStatus();
     }
 
     private void initViews(View view) {
         swipeRefresh = view.findViewById(R.id.swipeRefresh);
         contentLayout = view.findViewById(R.id.contentLayout);
+        offlineLayout = view.findViewById(R.id.offlineLayout);
+        onlineContentLayout = view.findViewById(R.id.onlineContentLayout);
+        lottieOffline = view.findViewById(R.id.lottieOffline);
+        btnRetry = view.findViewById(R.id.btnRetry);
         cardMealOfDay = view.findViewById(R.id.cardMealOfDay);
         ivMealOfDay = view.findViewById(R.id.ivMealOfDay);
         tvMealOfDayName = view.findViewById(R.id.tvMealOfDayName);
@@ -86,7 +104,7 @@ public class HomeFragment extends Fragment implements HomeView {
         etSearch = view.findViewById(R.id.etSearch);
         tvSeeAllCategories = view.findViewById(R.id.tvSeeAllCategories);
         tvSeeAllCountries = view.findViewById(R.id.tvSeeAllCountries);
-        
+
         ViewCompat.setOnApplyWindowInsetsListener(contentLayout, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.statusBars());
             v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), v.getPaddingBottom());
@@ -105,7 +123,14 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     private void setupListeners() {
-        swipeRefresh.setOnRefreshListener(() -> presenter.loadAllData());
+        swipeRefresh.setOnRefreshListener(() -> {
+            if (networkUtils.isNetworkAvailable()) {
+                presenter.loadAllData();
+            } else {
+                swipeRefresh.setRefreshing(false);
+                showOfflineState();
+            }
+        });
         swipeRefresh.setColorSchemeResources(R.color.primary, R.color.secondary);
 
         cardMealOfDay.setOnClickListener(v -> {
@@ -132,6 +157,30 @@ public class HomeFragment extends Fragment implements HomeView {
             args.putInt(SearchFragment.ARG_INITIAL_TAB, SearchFragment.TAB_COUNTRIES);
             Navigation.findNavController(v).navigate(R.id.searchFragment, args);
         });
+
+        
+        btnRetry.setOnClickListener(v -> {
+            if (networkUtils.isNetworkAvailable()) {
+                showOnlineState();
+                presenter.loadAllData();
+            } else {
+                Toast.makeText(getContext(), R.string.no_network, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void observeNetworkStatus() {
+        disposables.add(
+                networkUtils.observeNetworkStatus()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(isOnline -> {
+                            if (isOnline) {
+                                showOnlineState();
+                                presenter.loadAllData();
+                            } else {
+                                showOfflineState();
+                            }
+                        }));
     }
 
     @Override
@@ -149,11 +198,33 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     @Override
+    public void showOfflineState() {
+        if (offlineLayout != null && onlineContentLayout != null) {
+            offlineLayout.setVisibility(View.VISIBLE);
+            onlineContentLayout.setVisibility(View.GONE);
+            if (lottieOffline != null) {
+                lottieOffline.playAnimation();
+            }
+        }
+    }
+
+    @Override
+    public void showOnlineState() {
+        if (offlineLayout != null && onlineContentLayout != null) {
+            offlineLayout.setVisibility(View.GONE);
+            onlineContentLayout.setVisibility(View.VISIBLE);
+            if (lottieOffline != null) {
+                lottieOffline.pauseAnimation();
+            }
+        }
+    }
+
+    @Override
     public void showRandomMeal(Meal meal) {
         currentMealOfDay = meal;
         tvMealOfDayName.setText(meal.getName());
         tvMealOfDayCategory.setText(meal.getCategory() + " • " + meal.getArea());
-        
+
         Glide.with(this)
                 .load(meal.getThumbnail())
                 .transition(DrawableTransitionOptions.withCrossFade())
@@ -173,7 +244,12 @@ public class HomeFragment extends Fragment implements HomeView {
 
     @Override
     public void showError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        // Check if error is due to no network
+        if (message != null && message.toLowerCase().contains("no internet")) {
+            showOfflineState();
+        } else {
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -191,8 +267,7 @@ public class HomeFragment extends Fragment implements HomeView {
         Intent intent = MealsListActivity.createIntent(
                 getContext(),
                 MealsListActivity.FILTER_CATEGORY,
-                categoryName
-        );
+                categoryName);
         startActivity(intent);
     }
 
@@ -201,8 +276,7 @@ public class HomeFragment extends Fragment implements HomeView {
         Intent intent = MealsListActivity.createIntent(
                 getContext(),
                 MealsListActivity.FILTER_AREA,
-                areaName
-        );
+                areaName);
         startActivity(intent);
     }
 
@@ -212,5 +286,6 @@ public class HomeFragment extends Fragment implements HomeView {
         if (presenter != null) {
             presenter.onDestroy();
         }
+        disposables.clear();
     }
 }

@@ -301,16 +301,13 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     }
 
     private void showDayPickerDialog() {
-        // Use MaterialDatePicker to select any date from today onwards
-        // This allows adding meals to this week or any future week
-
+    
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
 
-        // Build constraints to only allow today and future dates
         com.google.android.material.datepicker.CalendarConstraints.Builder constraintsBuilder = new com.google.android.material.datepicker.CalendarConstraints.Builder();
         constraintsBuilder.setStart(today.getTimeInMillis());
         constraintsBuilder.setValidator(com.google.android.material.datepicker.DateValidatorPointForward.now());
@@ -322,7 +319,6 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
                 .build();
 
         datePicker.addOnPositiveButtonClickListener(selection -> {
-            // Get the selected date
             Calendar selectedDate = Calendar.getInstance();
             selectedDate.setTimeInMillis(selection);
 
@@ -332,19 +328,18 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
             selectedDate.set(Calendar.SECOND, 0);
             selectedDate.set(Calendar.MILLISECOND, 0);
 
-            // Get the day name
+            
             java.text.SimpleDateFormat dayFormat = new java.text.SimpleDateFormat("EEEE", java.util.Locale.ENGLISH);
             String dayName = dayFormat.format(selectedDate.getTime());
 
-            // Get the formatted date for display
+            
             java.text.SimpleDateFormat displayFormat = new java.text.SimpleDateFormat("MMMM d, yyyy",
                     java.util.Locale.getDefault());
             String displayDate = displayFormat.format(selectedDate.getTime());
 
-            // Add the meal with the specific date
             presenter.addToPlanWithDate(currentMeal, dayName, selectedDate.getTimeInMillis());
 
-            // Show success message with date
+            
             Toast.makeText(this,
                     getString(R.string.meal_added_to_plan) + " (" + displayDate + ")",
                     Toast.LENGTH_SHORT).show();

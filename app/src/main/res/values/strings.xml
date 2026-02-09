@@ -172,4 +172,13 @@
     <string name="remove">Remove</string>
     <string name="select_date_for_meal">Select Date for Meal</string>
     <string name="meal_added_to_plan">Meal added to plan!</string>
+    
+    <!-- Offline Mode -->
+    <string name="offline_title">You\'re Offline</string>
+    <string name="offline_subtitle">Please check your internet connection and try again</string>
+    
+    <!-- Developer Credit -->
+    <string name="developed_by">Developed by Omar Amer</string>
+    <string name="developer_website">https://devomaramer.github.io/My_Portfolio/</string>
+    <string name="visit_portfolio">Visit Portfolio</string>
 </resources>
