@@ -60,6 +60,20 @@ public class Area {
             case "turkish": return "tr";
             case "ukrainian": return "ua";
             case "vietnamese": return "vn";
+            case "australian": return "au";
+            case "argentinian": return "ar";
+            case "algerian": return "dz";
+            case "norwegian": return "no";
+            case "saudi arabian": return "sa";
+            case "slovakian": return "sk";
+            case "syrian" : return "sy";
+            case "uruguayan": return "uy";
+            case "venezulan": return "ve";
+            case "singaporean": return "sg";
+            case "swedish": return "se";
+            case "belgian": return "be";
+            case "brazilian": return "br";
+
             default: return null;
         }
     }

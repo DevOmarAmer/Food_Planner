@@ -29,6 +29,7 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_TYPE_HEADER = 0;
     private static final int VIEW_TYPE_MEAL = 1;
+    private static final int VIEW_TYPE_EMPTY = 2;
 
     private static final String[] DAYS_ORDER = {
             "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"
@@ -37,22 +38,30 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<Object> items = new ArrayList<>();
     private final OnPlanMealClickListener listener;
     private String todayName;
+    private long weekStartDate;
 
     public interface OnPlanMealClickListener {
         void onMealClick(PlannedMeal plannedMeal);
 
         void onRemoveClick(PlannedMeal plannedMeal);
+
+        void onAddMealClick(String day, long dateTimestamp);
     }
 
     public PlanAdapter(OnPlanMealClickListener listener) {
         this.listener = listener;
         updateTodayName();
+        this.weekStartDate = System.currentTimeMillis();
     }
 
     private void updateTodayName() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         todayName = dayFormat.format(calendar.getTime());
+    }
+
+    public void setWeekStartDate(long weekStartDate) {
+        this.weekStartDate = weekStartDate;
     }
 
     public void setPlannedMeals(List<PlannedMeal> plannedMeals) {
@@ -75,23 +84,57 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
 
-        // Build items list with headers and meals
-        for (String day : DAYS_ORDER) {
+        // Build items list with headers and meals (always show all days)
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(weekStartDate);
+
+        for (int i = 0; i < DAYS_ORDER.length; i++) {
+            String day = DAYS_ORDER[i];
             List<PlannedMeal> dayMeals = mealsByDay.get(day);
+
+            // Calculate the date for this day
+            Calendar dayCal = (Calendar) cal.clone();
+            dayCal.add(Calendar.DAY_OF_MONTH, i);
+            long dateTimestamp = dayCal.getTimeInMillis();
+
+            // Check if this day is today
+            boolean isToday = day.equals(todayName) && isCurrentWeek();
+
+            int mealCount = dayMeals != null ? dayMeals.size() : 0;
+            DayHeader header = new DayHeader(day, mealCount, isToday, dateTimestamp);
+            items.add(header);
+
             if (dayMeals != null && !dayMeals.isEmpty()) {
-                // Create header with meal count
-                DayHeader header = new DayHeader(day, dayMeals.size(), day.equals(todayName));
-                items.add(header);
                 items.addAll(dayMeals);
+            } else {
+                // Add empty placeholder
+                items.add(new EmptyMealPlaceholder(day, dateTimestamp));
             }
         }
 
         notifyDataSetChanged();
     }
 
+    private boolean isCurrentWeek() {
+        Calendar now = Calendar.getInstance();
+        Calendar weekStart = Calendar.getInstance();
+        weekStart.setTimeInMillis(weekStartDate);
+
+        // Check if weekStartDate is within the current week
+        long diff = Math.abs(now.getTimeInMillis() - weekStart.getTimeInMillis());
+        return diff < 7L * 24 * 60 * 60 * 1000;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        return items.get(position) instanceof DayHeader ? VIEW_TYPE_HEADER : VIEW_TYPE_MEAL;
+        Object item = items.get(position);
+        if (item instanceof DayHeader) {
+            return VIEW_TYPE_HEADER;
+        } else if (item instanceof EmptyMealPlaceholder) {
+            return VIEW_TYPE_EMPTY;
+        } else {
+            return VIEW_TYPE_MEAL;
+        }
     }
 
     @NonNull
@@ -101,6 +144,9 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewType == VIEW_TYPE_HEADER) {
             View view = inflater.inflate(R.layout.item_day_header, parent, false);
             return new DayHeaderViewHolder(view);
+        } else if (viewType == VIEW_TYPE_EMPTY) {
+            View view = inflater.inflate(R.layout.item_empty_meal, parent, false);
+            return new EmptyMealViewHolder(view);
         } else {
             View view = inflater.inflate(R.layout.item_planned_meal, parent, false);
             return new PlannedMealViewHolder(view);
@@ -111,6 +157,8 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DayHeaderViewHolder) {
             ((DayHeaderViewHolder) holder).bind((DayHeader) items.get(position));
+        } else if (holder instanceof EmptyMealViewHolder) {
+            ((EmptyMealViewHolder) holder).bind((EmptyMealPlaceholder) items.get(position));
         } else if (holder instanceof PlannedMealViewHolder) {
             ((PlannedMealViewHolder) holder).bind((PlannedMeal) items.get(position));
         }
@@ -126,11 +174,24 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String dayName;
         int mealCount;
         boolean isToday;
+        long dateTimestamp;
 
-        DayHeader(String dayName, int mealCount, boolean isToday) {
+        DayHeader(String dayName, int mealCount, boolean isToday, long dateTimestamp) {
             this.dayName = dayName;
             this.mealCount = mealCount;
             this.isToday = isToday;
+            this.dateTimestamp = dateTimestamp;
+        }
+    }
+
+    // Empty meal placeholder data class
+    static class EmptyMealPlaceholder {
+        String dayName;
+        long dateTimestamp;
+
+        EmptyMealPlaceholder(String dayName, long dateTimestamp) {
+            this.dayName = dayName;
+            this.dateTimestamp = dateTimestamp;
         }
     }
 
@@ -154,46 +215,44 @@ public class PlanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public void bind(DayHeader header) {
             tvDayName.setText(header.dayName);
 
-            // Calculate date for this day
+            // Format the date from the header's timestamp
             Calendar cal = Calendar.getInstance();
-            int todayDayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-            int targetDay = getDayOfWeek(header.dayName);
-            int diff = targetDay - todayDayOfWeek;
-            cal.add(Calendar.DAY_OF_MONTH, diff);
-
+            cal.setTimeInMillis(header.dateTimestamp);
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM d", Locale.getDefault());
             tvDate.setText(dateFormat.format(cal.getTime()));
 
             // Meal count
-            if (header.mealCount == 1) {
-                tvMealCount.setText(R.string.one_meal);
+            if (header.mealCount == 0) {
+                cardMealCount.setVisibility(View.GONE);
             } else {
-                tvMealCount.setText(itemView.getContext().getString(R.string.meals_count, header.mealCount));
+                cardMealCount.setVisibility(View.VISIBLE);
+                if (header.mealCount == 1) {
+                    tvMealCount.setText(R.string.one_meal);
+                } else {
+                    tvMealCount.setText(itemView.getContext().getString(R.string.meals_count, header.mealCount));
+                }
             }
 
             // Today badge
             chipToday.setVisibility(header.isToday ? View.VISIBLE : View.GONE);
         }
+    }
 
-        private int getDayOfWeek(String dayName) {
-            switch (dayName) {
-                case "Sunday":
-                    return Calendar.SUNDAY;
-                case "Monday":
-                    return Calendar.MONDAY;
-                case "Tuesday":
-                    return Calendar.TUESDAY;
-                case "Wednesday":
-                    return Calendar.WEDNESDAY;
-                case "Thursday":
-                    return Calendar.THURSDAY;
-                case "Friday":
-                    return Calendar.FRIDAY;
-                case "Saturday":
-                    return Calendar.SATURDAY;
-                default:
-                    return Calendar.SUNDAY;
-            }
+    // Empty Meal ViewHolder
+    class EmptyMealViewHolder extends RecyclerView.ViewHolder {
+        private final MaterialButton btnAddMeal;
+
+        public EmptyMealViewHolder(@NonNull View itemView) {
+            super(itemView);
+            btnAddMeal = itemView.findViewById(R.id.btnAddMeal);
+        }
+
+        public void bind(EmptyMealPlaceholder placeholder) {
+            btnAddMeal.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onAddMealClick(placeholder.dayName, placeholder.dateTimestamp);
+                }
+            });
         }
     }
 

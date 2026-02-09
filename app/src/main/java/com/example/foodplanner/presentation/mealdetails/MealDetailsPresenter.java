@@ -35,9 +35,7 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
                                 throwable -> {
                                     view.hideLoading();
                                     view.showError(throwable.getMessage());
-                                }
-                        )
-        );
+                                }));
     }
 
     @Override
@@ -52,9 +50,7 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
                                         isFavorite = false;
                                         view.showRemovedFromFavorites();
                                     },
-                                    throwable -> view.showError(throwable.getMessage())
-                            )
-            );
+                                    throwable -> view.showError(throwable.getMessage())));
         } else {
             disposables.add(
                     repository.addToFavorites(meal)
@@ -65,9 +61,7 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
                                         isFavorite = true;
                                         view.showAddedToFavorites();
                                     },
-                                    throwable -> view.showError(throwable.getMessage())
-                            )
-            );
+                                    throwable -> view.showError(throwable.getMessage())));
         }
     }
 
@@ -79,9 +73,18 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 () -> view.showAddedToPlan(day),
-                                throwable -> view.showError(throwable.getMessage())
-                        )
-        );
+                                throwable -> view.showError(throwable.getMessage())));
+    }
+
+    @Override
+    public void addToPlanWithDate(Meal meal, String day, long plannedDate) {
+        disposables.add(
+                repository.addToPlanWithDate(meal, day, plannedDate)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> view.showAddedToPlan(day),
+                                throwable -> view.showError(throwable.getMessage())));
     }
 
     @Override
@@ -95,9 +98,7 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
                                     isFavorite = isFav;
                                     view.showFavoriteStatus(isFav);
                                 },
-                                throwable -> view.showFavoriteStatus(false)
-                        )
-        );
+                                throwable -> view.showFavoriteStatus(false)));
     }
 
     @Override

@@ -58,7 +58,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     private TextView tvVideoTitle;
     private WebView youtubeWebView;
     private Toolbar toolbar;
-    
+
     private static final int CALENDAR_PERMISSION_REQUEST_CODE = 100;
 
     private Meal currentMeal;
@@ -69,7 +69,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_details);
-        
+
         sharedPrefsHelper = SharedPrefsHelper.getInstance(this);
 
         initViews();
@@ -107,10 +107,10 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         tvVideoTitle = findViewById(R.id.tvVideoTitle);
         youtubeWebView = findViewById(R.id.youtubeWebView);
         toolbar = findViewById(R.id.toolbar);
-        
+
         setupWebView();
     }
-    
+
     private void setupWebView() {
         WebSettings webSettings = youtubeWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -124,8 +124,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         // Important user agent for YouTube compatibility
         webSettings.setUserAgentString(
                 "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 " +
-                        "Chrome/120.0.0.0 Mobile Safari/537.36"
-        );
+                        "Chrome/120.0.0.0 Mobile Safari/537.36");
 
         youtubeWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         youtubeWebView.setWebChromeClient(new WebChromeClient());
@@ -135,15 +134,14 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
             public void onReceivedError(
                     WebView view,
                     WebResourceRequest request,
-                    WebResourceError error
-            ) {
+                    WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 Log.e("YouTubeWebView", "WebView error, fallback to YouTube app");
                 openYoutubeExternally();
             }
         });
     }
-    
+
     private void loadYouTubeVideo(String videoId) {
         if (videoId == null || videoId.isEmpty()) {
             cardVideo.setVisibility(View.GONE);
@@ -154,33 +152,32 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         cardVideo.setVisibility(View.VISIBLE);
         tvVideoTitle.setVisibility(View.VISIBLE);
 
-        String html =
-                "<!DOCTYPE html>" +
-                        "<html>" +
-                        "<head>" +
-                        "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-                        "<style>" +
-                        "html, body { margin: 0; padding: 0; background: black; width: 100%; height: 100%; }" +
-                        "iframe { width: 100%; height: 100%; border: 0; }" +
-                        "</style>" +
-                        "</head>" +
-                        "<body>" +
-                        "<iframe src='https://www.youtube-nocookie.com/embed/" + videoId +
-                        "?playsinline=1&rel=0' " +
-                        "allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' " +
-                        "allowfullscreen></iframe>" +
-                        "</body>" +
-                        "</html>";
+        String html = "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "<style>" +
+                "html, body { margin: 0; padding: 0; background: black; width: 100%; height: 100%; }" +
+                "iframe { width: 100%; height: 100%; border: 0; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "<iframe src='https://www.youtube-nocookie.com/embed/" + videoId +
+                "?playsinline=1&rel=0' " +
+                "allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' "
+                +
+                "allowfullscreen></iframe>" +
+                "</body>" +
+                "</html>";
 
         youtubeWebView.loadDataWithBaseURL(
                 "https://www.youtube-nocookie.com",
                 html,
                 "text/html",
                 "UTF-8",
-                null
-        );
+                null);
     }
-    
+
     private void openYoutubeExternally() {
         if (currentMeal != null && currentMeal.getYoutubeUrl() != null) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentMeal.getYoutubeUrl()));
@@ -222,7 +219,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
                 showDayPickerDialog();
             }
         });
-        
+
         fabAddToCalendar.setOnClickListener(v -> {
             if (sharedPrefsHelper.isGuest()) {
                 showGuestSignInDialog();
@@ -233,50 +230,49 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
             }
         });
     }
-    
+
     private void showCalendarDatePicker() {
         if (!CalendarHelper.hasCalendarPermission(this)) {
             requestCalendarPermission();
             return;
         }
-        
+
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(R.string.select_date)
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
-        
+
         datePicker.addOnPositiveButtonClickListener(selection -> {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(selection);
-            
+
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            
+
             boolean success = CalendarHelper.addMealToCalendar(this, currentMeal, year, month, day);
-            
+
             if (success) {
                 Toast.makeText(this, R.string.meal_added_to_calendar, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Failed to add to calendar", Toast.LENGTH_SHORT).show();
             }
         });
-        
+
         datePicker.show(getSupportFragmentManager(), "date_picker");
     }
-    
+
     private void requestCalendarPermission() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             requestPermissions(
-                    new String[]{
+                    new String[] {
                             android.Manifest.permission.READ_CALENDAR,
                             android.Manifest.permission.WRITE_CALENDAR
                     },
-                    CALENDAR_PERMISSION_REQUEST_CODE
-            );
+                    CALENDAR_PERMISSION_REQUEST_CODE);
         }
     }
-    
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -289,7 +285,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
             }
         }
     }
-    
+
     private void showGuestSignInDialog() {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.sign_in_required)
@@ -305,15 +301,56 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     }
 
     private void showDayPickerDialog() {
-        String[] days = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
-        
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Add to which day?")
-                .setItems(days, (dialog, which) -> {
-                    presenter.addToPlan(currentMeal, days[which]);
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        // Use MaterialDatePicker to select any date from today onwards
+        // This allows adding meals to this week or any future week
+
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+        // Build constraints to only allow today and future dates
+        com.google.android.material.datepicker.CalendarConstraints.Builder constraintsBuilder = new com.google.android.material.datepicker.CalendarConstraints.Builder();
+        constraintsBuilder.setStart(today.getTimeInMillis());
+        constraintsBuilder.setValidator(com.google.android.material.datepicker.DateValidatorPointForward.now());
+
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(R.string.select_date_for_meal)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .setCalendarConstraints(constraintsBuilder.build())
+                .build();
+
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            // Get the selected date
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.setTimeInMillis(selection);
+
+            // Set to midnight for the planned date timestamp
+            selectedDate.set(Calendar.HOUR_OF_DAY, 0);
+            selectedDate.set(Calendar.MINUTE, 0);
+            selectedDate.set(Calendar.SECOND, 0);
+            selectedDate.set(Calendar.MILLISECOND, 0);
+
+            // Get the day name
+            java.text.SimpleDateFormat dayFormat = new java.text.SimpleDateFormat("EEEE", java.util.Locale.ENGLISH);
+            String dayName = dayFormat.format(selectedDate.getTime());
+
+            // Get the formatted date for display
+            java.text.SimpleDateFormat displayFormat = new java.text.SimpleDateFormat("MMMM d, yyyy",
+                    java.util.Locale.getDefault());
+            String displayDate = displayFormat.format(selectedDate.getTime());
+
+            // Add the meal with the specific date
+            presenter.addToPlanWithDate(currentMeal, dayName, selectedDate.getTimeInMillis());
+
+            // Show success message with date
+            Toast.makeText(this,
+                    getString(R.string.meal_added_to_plan) + " (" + displayDate + ")",
+                    Toast.LENGTH_SHORT).show();
+        });
+
+        datePicker.show(getSupportFragmentManager(), "meal_date_picker");
     }
 
     private void initPresenter() {

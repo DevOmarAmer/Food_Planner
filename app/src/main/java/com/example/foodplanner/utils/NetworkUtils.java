@@ -11,10 +11,7 @@ import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
-/**
- * Utility class for checking and monitoring network connectivity.
- * Uses RxJava to provide reactive network status updates.
- */
+
 public class NetworkUtils {
     
     private static NetworkUtils instance;
@@ -34,11 +31,7 @@ public class NetworkUtils {
         }
         return instance;
     }
-    
-    /**
-     * Check if network is currently available
-     * @return true if network is available, false otherwise
-     */
+
     public boolean isNetworkAvailable() {
         if (connectivityManager == null) {
             return false;
@@ -58,18 +51,12 @@ public class NetworkUtils {
                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
     }
     
-    /**
-     * Get an Observable that emits network status changes
-     * @return Observable<Boolean> that emits true when online, false when offline
-     */
+
     public Observable<Boolean> observeNetworkStatus() {
         return networkStatusSubject.distinctUntilChanged();
     }
     
-    /**
-     * Get the current network status as a one-time check
-     * @return current network status
-     */
+
     public boolean getCurrentStatus() {
         return networkStatusSubject.getValue() != null && networkStatusSubject.getValue();
     }
@@ -107,9 +94,7 @@ public class NetworkUtils {
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback);
     }
     
-    /**
-     * Unregister the network callback when no longer needed
-     */
+
     public void unregister() {
         if (connectivityManager != null && networkCallback != null) {
             try {
