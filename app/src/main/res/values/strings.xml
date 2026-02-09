@@ -142,7 +142,7 @@
     <string name="share_app_description">Recommend to friends</string>
     <string name="share_app_text">Check out Food Planner - the best meal planning app! Download now: https://play.google.com/store/apps/details?id=com.example.foodplanner</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="privacy_policy_url">https://example.com/privacy</string>
+    <string name="privacy_policy_url">https://devomaramer.github.io/Food_Planner/PRIVACY_POLICY.html</string>
 
     <string name="password_reset_email_sent">Password reset email sent successfully</string>
     <string name="profile_avatar">Profile Avatar</string>

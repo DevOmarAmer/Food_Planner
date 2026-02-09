@@ -11,6 +11,8 @@ public class SharedPrefsHelper {
     private static final String KEY_USER_EMAIL = "userEmail";
     private static final String KEY_USER_NAME = "userName";
     private static final String KEY_USER_ID = "userId";
+    private static final String KEY_USER_IMAGE_URL = "userImageUrl";
+
     private static final String KEY_ONBOARDING_COMPLETED = "onboardingCompleted";
 
     // App Settings Keys
@@ -38,11 +40,12 @@ public class SharedPrefsHelper {
         return instance;
     }
 
-    public void saveUserLogin(String userId, String email, String name) {
+    public void saveUserLogin(String userId, String email, String name, String imageUrl) {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
         editor.putBoolean(KEY_IS_GUEST, false);
         editor.putString(KEY_USER_ID, userId);
         editor.putString(KEY_USER_EMAIL, email);
+        editor.putString(KEY_USER_IMAGE_URL, imageUrl);
         editor.putString(KEY_USER_NAME, name);
         editor.apply();
     }
@@ -52,6 +55,7 @@ public class SharedPrefsHelper {
         editor.putBoolean(KEY_IS_GUEST, true);
         editor.putString(KEY_USER_ID, null);
         editor.putString(KEY_USER_EMAIL, null);
+        editor.putString(KEY_USER_IMAGE_URL, null);
         editor.putString(KEY_USER_NAME, "Guest");
         editor.apply();
     }
@@ -83,6 +87,13 @@ public class SharedPrefsHelper {
 
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, null);
+    }
+    public String getUserImageUrl(){
+        return sharedPreferences.getString(KEY_USER_IMAGE_URL, null);
+    }
+    public void setUserImageUrl(String imageUrl){
+        editor.putString(KEY_USER_IMAGE_URL, imageUrl);
+        editor.apply();
     }
 
     public String getUserName() {

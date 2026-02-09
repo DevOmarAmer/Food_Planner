@@ -35,8 +35,10 @@ import com.example.foodplanner.presentation.search.adapters.SearchIngredientAdap
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -45,14 +47,16 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
 public class SearchFragment extends Fragment implements SearchView {
 
     public static final String ARG_INITIAL_TAB = "initialTab";
-    public static final int TAB_CATEGORIES = 0;
-    public static final int TAB_COUNTRIES = 1;
-    public static final int TAB_INGREDIENTS = 2;
+    public static final int TAB_MEALS = 0;
+    public static final int TAB_CATEGORIES = 1;
+    public static final int TAB_COUNTRIES = 2;
+    public static final int TAB_INGREDIENTS = 3;
 
     private MaterialToolbar toolbar;
     private TextInputEditText etSearch;
     private TabLayout tabLayout;
     private ProgressBar progressBar;
+    private RecyclerView rvMeals;
     private RecyclerView rvCategories;
     private RecyclerView rvAreas;
     private RecyclerView rvIngredients;
@@ -61,10 +65,16 @@ public class SearchFragment extends Fragment implements SearchView {
     private TextView tvEmptyMessage;
 
     private SearchPresenterImpl presenter;
+    private MealsAdapter mealsAdapter;
     private SearchCategoryAdapter categoryAdapter;
     private SearchAreaAdapter areaAdapter;
     private SearchIngredientAdapter ingredientAdapter;
     private MealsAdapter searchResultsAdapter;
+
+    // Original unfiltered lists for local filtering
+    private List<Category> allCategories = new ArrayList<>();
+    private List<Area> allAreas = new ArrayList<>();
+    private List<Ingredient> allIngredients = new ArrayList<>();
 
     private boolean isSearchMode = false;
     private final PublishSubject<String> searchSubject = PublishSubject.create();
@@ -73,7 +83,7 @@ public class SearchFragment extends Fragment implements SearchView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
@@ -84,15 +94,15 @@ public class SearchFragment extends Fragment implements SearchView {
         setupTabs();
         setupRecyclerViews();
         setupSearch();
-        
-        int initialTab = getArguments() != null ? getArguments().getInt(ARG_INITIAL_TAB, TAB_CATEGORIES) : TAB_CATEGORIES;
+
+        int initialTab = getArguments() != null ? getArguments().getInt(ARG_INITIAL_TAB, TAB_MEALS) : TAB_MEALS;
         if (initialTab >= 0 && initialTab <= TAB_INGREDIENTS) {
             tabLayout.selectTab(tabLayout.getTabAt(initialTab));
             showTabContent(initialTab);
         } else {
-            showTabContent(TAB_CATEGORIES);
+            showTabContent(TAB_MEALS);
         }
-        
+
         presenter = new SearchPresenterImpl(this, requireContext());
         loadInitialData();
     }
@@ -102,6 +112,7 @@ public class SearchFragment extends Fragment implements SearchView {
         etSearch = view.findViewById(R.id.etSearch);
         tabLayout = view.findViewById(R.id.tabLayout);
         progressBar = view.findViewById(R.id.progressBar);
+        rvMeals = view.findViewById(R.id.rvMeals);
         rvCategories = view.findViewById(R.id.rvCategories);
         rvAreas = view.findViewById(R.id.rvAreas);
         rvIngredients = view.findViewById(R.id.rvIngredients);
@@ -117,6 +128,7 @@ public class SearchFragment extends Fragment implements SearchView {
     }
 
     private void setupTabs() {
+        tabLayout.addTab(tabLayout.newTab().setText("Meals"));
         tabLayout.addTab(tabLayout.newTab().setText("Categories"));
         tabLayout.addTab(tabLayout.newTab().setText("Countries"));
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
@@ -124,20 +136,44 @@ public class SearchFragment extends Fragment implements SearchView {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (!isSearchMode) {
-                    showTabContent(tab.getPosition());
-                }
+                exitSearchMode();
+                showTabContent(tab.getPosition());
+                updateSearchHint(tab.getPosition());
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 
+    private void updateSearchHint(int tabPosition) {
+        switch (tabPosition) {
+            case TAB_MEALS:
+                etSearch.setHint("Search for meals...");
+                break;
+            case TAB_CATEGORIES:
+                etSearch.setHint("Filter categories...");
+                break;
+            case TAB_COUNTRIES:
+                etSearch.setHint("Filter countries...");
+                break;
+            case TAB_INGREDIENTS:
+                etSearch.setHint("Filter ingredients...");
+                break;
+        }
+    }
+
     private void setupRecyclerViews() {
+        mealsAdapter = new MealsAdapter();
+        rvMeals.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMeals.setAdapter(mealsAdapter);
+        mealsAdapter.setOnMealClickListener(meal -> presenter.onMealClicked(meal));
+
         categoryAdapter = new SearchCategoryAdapter();
         rvCategories.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvCategories.setAdapter(categoryAdapter);
@@ -162,22 +198,21 @@ public class SearchFragment extends Fragment implements SearchView {
     private void setupSearch() {
         disposables.add(
                 searchSubject
-                        .debounce(500, TimeUnit.MILLISECONDS)
+                        .debounce(300, TimeUnit.MILLISECONDS)
                         .distinctUntilChanged()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(query -> {
                             if (query.isEmpty()) {
                                 exitSearchMode();
                             } else {
-                                isSearchMode = true;
-                                presenter.searchMeals(query);
+                                performTabSearch(query);
                             }
-                        })
-        );
+                        }));
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -185,25 +220,84 @@ public class SearchFragment extends Fragment implements SearchView {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch();
+                String query = etSearch.getText() != null ? etSearch.getText().toString().trim() : "";
+                if (!query.isEmpty()) {
+                    performTabSearch(query);
+                }
                 return true;
             }
             return false;
         });
     }
 
-    private void performSearch() {
-        String query = etSearch.getText() != null ? etSearch.getText().toString().trim() : "";
-        if (!query.isEmpty()) {
-            isSearchMode = true;
-            presenter.searchMeals(query);
+    private void performTabSearch(String query) {
+        int selectedTab = tabLayout.getSelectedTabPosition();
+        isSearchMode = true;
+
+        switch (selectedTab) {
+            case TAB_MEALS:
+                presenter.searchMeals(query);
+                break;
+            case TAB_CATEGORIES:
+                filterCategories(query);
+                break;
+            case TAB_COUNTRIES:
+                filterAreas(query);
+                break;
+            case TAB_INGREDIENTS:
+                filterIngredients(query);
+                break;
+        }
+    }
+
+    private void filterCategories(String query) {
+        String lowerQuery = query.toLowerCase();
+        List<Category> filtered = allCategories.stream()
+                .filter(c -> c.getName().toLowerCase().contains(lowerQuery))
+                .collect(Collectors.toList());
+
+        if (filtered.isEmpty()) {
+            showEmpty();
+            tvEmptyMessage.setText("No categories found");
         } else {
-            exitSearchMode();
+            layoutEmpty.setVisibility(View.GONE);
+            categoryAdapter.setCategories(filtered);
+        }
+    }
+
+    private void filterAreas(String query) {
+        String lowerQuery = query.toLowerCase();
+        List<Area> filtered = allAreas.stream()
+                .filter(a -> a.getName().toLowerCase().contains(lowerQuery))
+                .collect(Collectors.toList());
+
+        if (filtered.isEmpty()) {
+            showEmpty();
+            tvEmptyMessage.setText("No countries found");
+        } else {
+            layoutEmpty.setVisibility(View.GONE);
+            areaAdapter.setAreas(filtered);
+        }
+    }
+
+    private void filterIngredients(String query) {
+        String lowerQuery = query.toLowerCase();
+        List<Ingredient> filtered = allIngredients.stream()
+                .filter(i -> i.getName().toLowerCase().contains(lowerQuery))
+                .collect(Collectors.toList());
+
+        if (filtered.isEmpty()) {
+            showEmpty();
+            tvEmptyMessage.setText("No ingredients found");
+        } else {
+            layoutEmpty.setVisibility(View.GONE);
+            ingredientAdapter.setIngredients(filtered);
         }
     }
 
@@ -211,8 +305,14 @@ public class SearchFragment extends Fragment implements SearchView {
         isSearchMode = false;
         rvSearchResults.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.GONE);
+
+        // Restore original lists
+        categoryAdapter.setCategories(allCategories);
+        areaAdapter.setAreas(allAreas);
+        ingredientAdapter.setIngredients(allIngredients);
+
         int position = tabLayout.getSelectedTabPosition();
-        showTabContent(position >= 0 ? position : TAB_CATEGORIES);
+        showTabContent(position >= 0 ? position : TAB_MEALS);
     }
 
     private void loadInitialData() {
@@ -222,6 +322,7 @@ public class SearchFragment extends Fragment implements SearchView {
     }
 
     private void showTabContent(int tabPosition) {
+        rvMeals.setVisibility(tabPosition == TAB_MEALS ? View.VISIBLE : View.GONE);
         rvCategories.setVisibility(tabPosition == TAB_CATEGORIES ? View.VISIBLE : View.GONE);
         rvAreas.setVisibility(tabPosition == TAB_COUNTRIES ? View.VISIBLE : View.GONE);
         rvIngredients.setVisibility(tabPosition == TAB_INGREDIENTS ? View.VISIBLE : View.GONE);
@@ -241,27 +342,43 @@ public class SearchFragment extends Fragment implements SearchView {
 
     @Override
     public void showCategories(List<Category> categories) {
+        allCategories = new ArrayList<>(categories);
         categoryAdapter.setCategories(categories);
     }
 
     @Override
     public void showAreas(List<Area> areas) {
+        allAreas = new ArrayList<>(areas);
         areaAdapter.setAreas(areas);
     }
 
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
+        allIngredients = new ArrayList<>(ingredients);
         ingredientAdapter.setIngredients(ingredients);
     }
 
     @Override
     public void showSearchResults(List<Meal> meals) {
-        rvCategories.setVisibility(View.GONE);
-        rvAreas.setVisibility(View.GONE);
-        rvIngredients.setVisibility(View.GONE);
-        layoutEmpty.setVisibility(View.GONE);
-        rvSearchResults.setVisibility(View.VISIBLE);
-        searchResultsAdapter.setMeals(meals);
+        int selectedTab = tabLayout.getSelectedTabPosition();
+
+        if (selectedTab == TAB_MEALS) {
+            rvMeals.setVisibility(View.VISIBLE);
+            rvCategories.setVisibility(View.GONE);
+            rvAreas.setVisibility(View.GONE);
+            rvIngredients.setVisibility(View.GONE);
+            rvSearchResults.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.GONE);
+            mealsAdapter.setMeals(meals);
+        } else {
+            rvMeals.setVisibility(View.GONE);
+            rvCategories.setVisibility(View.GONE);
+            rvAreas.setVisibility(View.GONE);
+            rvIngredients.setVisibility(View.GONE);
+            layoutEmpty.setVisibility(View.GONE);
+            rvSearchResults.setVisibility(View.VISIBLE);
+            searchResultsAdapter.setMeals(meals);
+        }
     }
 
     @Override
@@ -271,12 +388,13 @@ public class SearchFragment extends Fragment implements SearchView {
 
     @Override
     public void showEmpty() {
+        rvMeals.setVisibility(View.GONE);
         rvCategories.setVisibility(View.GONE);
         rvAreas.setVisibility(View.GONE);
         rvIngredients.setVisibility(View.GONE);
         rvSearchResults.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.VISIBLE);
-        tvEmptyMessage.setText("No meals found");
+        tvEmptyMessage.setText("No results found");
     }
 
     @Override

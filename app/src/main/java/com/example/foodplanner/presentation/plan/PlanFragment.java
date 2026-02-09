@@ -22,6 +22,7 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.PlannedMeal;
 import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.presentation.mealdetails.MealDetailsActivity;
+import com.example.foodplanner.presentation.search.SearchFragment;
 import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -268,9 +269,11 @@ public class PlanFragment extends Fragment implements PlanView, PlanAdapter.OnPl
 
     private void navigateToSearch() {
         try {
-            Navigation.findNavController(requireView()).navigate(R.id.searchFragment);
+            Bundle bundle = new Bundle();
+            bundle.putInt(SearchFragment.ARG_INITIAL_TAB, 1);
+            Navigation.findNavController(requireView()).navigate(R.id.searchFragment, bundle);
         } catch (Exception e) {
-            // Fallback if navigation fails
+
             Toast.makeText(getContext(), "Navigate to search to add meals", Toast.LENGTH_SHORT).show();
         }
     }

@@ -5,7 +5,7 @@ import com.example.foodplanner.data.Auth.repository.AuthRepository;
 import com.example.foodplanner.presentation.auth.sign_up.view.SignUpView;
 
 public class SignUpPresenterImpl implements SignUpPresenter {
-    
+
     private SignUpView view;
     private final AuthRepository authRepository;
 
@@ -13,9 +13,7 @@ public class SignUpPresenterImpl implements SignUpPresenter {
         this.view = view;
         this.authRepository = authRepository;
     }
-    
 
-    
     @Override
     public void signUp(String name, String email, String password) {
         if (name == null || name.trim().isEmpty()) {
@@ -30,12 +28,12 @@ public class SignUpPresenterImpl implements SignUpPresenter {
             view.showError("Password must be at least 6 characters");
             return;
         }
-        
+
         view.showLoading();
-        
+
         authRepository.signUp(name, email, password, new AuthCallback() {
             @Override
-            public void onSuccess(String userId, String email, String displayName) {
+            public void onSuccess(String userId, String email, String displayName, String photoUrl) {
                 if (view != null) {
                     view.hideLoading();
                     view.showSuccess("Account created successfully!");
@@ -43,7 +41,7 @@ public class SignUpPresenterImpl implements SignUpPresenter {
 
                 }
             }
-            
+
             @Override
             public void onError(String errorMessage) {
                 if (view != null) {
@@ -53,7 +51,7 @@ public class SignUpPresenterImpl implements SignUpPresenter {
             }
         });
     }
-    
+
     @Override
     public void onDestroy() {
         view = null;

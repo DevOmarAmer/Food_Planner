@@ -11,8 +11,8 @@ public class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     }
     
     @Override
-    public void saveUserSession(String userId, String email, String displayName) {
-        sharedPrefsHelper.saveUserLogin(userId, email, displayName);
+    public void saveUserSession(String userId, String email, String displayName, String imageUrl) {
+        sharedPrefsHelper.saveUserLogin(userId, email, displayName, imageUrl);
     }
     
     @Override

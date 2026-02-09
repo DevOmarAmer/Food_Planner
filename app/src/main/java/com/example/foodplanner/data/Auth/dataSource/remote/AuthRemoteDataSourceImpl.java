@@ -14,17 +14,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-    
+
     private final FirebaseAuth firebaseAuth;
-    
+
     public AuthRemoteDataSourceImpl() {
         this.firebaseAuth = FirebaseAuth.getInstance();
     }
-    
+
     public AuthRemoteDataSourceImpl(FirebaseAuth firebaseAuth) {
         this.firebaseAuth = firebaseAuth;
     }
-    
+
     @Override
     public void login(String email, String password, AuthResultCallback callback) {
         firebaseAuth.signInWithEmailAndPassword(email.trim(), password)
@@ -35,7 +35,10 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                             String displayName = user.getDisplayName() != null
                                     ? user.getDisplayName()
                                     : "User";
-                            callback.onSuccess(user.getUid(), user.getEmail(), displayName);
+                            String photoUrl = user.getPhotoUrl() != null
+                                    ? user.getPhotoUrl().toString()
+                                    : null;
+                            callback.onSuccess(user.getUid(), user.getEmail(), displayName, photoUrl);
                         } else {
                             callback.onError("Login failed: User is null");
                         }
@@ -47,7 +50,7 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                     }
                 });
     }
-    
+
     @Override
     public void signUp(String name, String email, String password, AuthResultCallback callback) {
         firebaseAuth.createUserWithEmailAndPassword(email.trim(), password)
@@ -58,10 +61,10 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(name.trim())
                                     .build();
-                            
+
                             user.updateProfile(profileUpdates)
                                     .addOnCompleteListener(profileTask -> {
-                                        callback.onSuccess(user.getUid(), user.getEmail(), name.trim());
+                                        callback.onSuccess(user.getUid(), user.getEmail(), name.trim(), null);
                                     });
                         } else {
                             callback.onError("Sign up failed: User is null");
@@ -74,11 +77,11 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                     }
                 });
     }
-    
+
     @Override
     public void signInWithGoogle(String idToken, AuthResultCallback callback) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        
+
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -87,7 +90,10 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                             String displayName = user.getDisplayName() != null
                                     ? user.getDisplayName()
                                     : "User";
-                            callback.onSuccess(user.getUid(), user.getEmail(), displayName);
+                            String photoUrl = user.getPhotoUrl() != null
+                                    ? user.getPhotoUrl().toString()
+                                    : null;
+                            callback.onSuccess(user.getUid(), user.getEmail(), displayName, photoUrl);
                         } else {
                             callback.onError("Google sign-in failed: User is null");
                         }
@@ -99,40 +105,40 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
                     }
                 });
     }
-    
+
     @Override
     public GetCredentialRequest buildGoogleSignInRequest(String webClientId) {
         GetSignInWithGoogleOption option = new GetSignInWithGoogleOption.Builder(webClientId)
                 .setNonce(generateNonce())
                 .build();
-        
+
         return new GetCredentialRequest.Builder()
                 .addCredentialOption(option)
                 .build();
     }
-    
+
     @Override
     public boolean isAuthenticated() {
         return firebaseAuth.getCurrentUser() != null;
     }
-    
+
     @Override
     public void signOut() {
         firebaseAuth.signOut();
     }
-    
+
     @Override
     public String getCurrentUserId() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         return user != null ? user.getUid() : null;
     }
-    
+
     @Override
     public String getCurrentUserEmail() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         return user != null ? user.getEmail() : null;
     }
-    
+
     @Override
     public String getCurrentUserDisplayName() {
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -141,7 +147,7 @@ public class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
         return "User";
     }
-    
+
     /**
      * Generate a secure nonce for Google Sign-In
      */

@@ -15,7 +15,7 @@ public class LoginPresenterImpl implements LoginPresenter {
         this.authRepository = authRepository;
         this.webClientId = webClientId;
     }
-    
+
     @Override
     public void login(String email, String password) {
         if (email == null || email.trim().isEmpty()) {
@@ -26,12 +26,12 @@ public class LoginPresenterImpl implements LoginPresenter {
             view.showError("Please enter your password");
             return;
         }
-        
+
         view.showLoading();
-        
+
         authRepository.login(email, password, new AuthCallback() {
             @Override
-            public void onSuccess(String userId, String email, String displayName) {
+            public void onSuccess(String userId, String email, String displayName, String photoUrl) {
                 if (view != null) {
                     view.hideLoading();
                     view.showSuccess("Welcome back!");
@@ -39,7 +39,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
                 }
             }
-            
+
             @Override
             public void onError(String errorMessage) {
                 if (view != null) {
@@ -49,36 +49,34 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
         });
     }
-    
 
-    
     @Override
     public void continueAsGuest() {
         authRepository.continueAsGuest();
         view.showSuccess("Continuing as guest");
 
     }
-    
+
     @Override
     public void onGoogleSignInClicked() {
         view.showLoading();
         view.launchGoogleSignIn(authRepository.buildGoogleSignInRequest(webClientId));
     }
-    
+
     @Override
     public void onGoogleIdTokenReceived(String idToken) {
         view.showLoading();
-        
+
         authRepository.signInWithGoogle(idToken, new AuthCallback() {
             @Override
-            public void onSuccess(String userId, String email, String displayName) {
+            public void onSuccess(String userId, String email, String displayName, String photoUrl) {
                 if (view != null) {
                     view.hideLoading();
                     view.showSuccess("Signed in with Google");
                     view.onLoginSuccess();
                 }
             }
-            
+
             @Override
             public void onError(String errorMessage) {
                 if (view != null) {
@@ -88,7 +86,7 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
         });
     }
-    
+
     @Override
     public void onDestroy() {
         view = null;

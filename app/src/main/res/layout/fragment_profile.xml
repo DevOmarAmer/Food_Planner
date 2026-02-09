@@ -58,8 +58,6 @@
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_person"
                             android:background="@color/surface_variant"
-                            android:padding="20dp"
-                            app:tint="@color/text_secondary"
                             android:contentDescription="@string/profile_avatar" />
 
                     </com.google.android.material.card.MaterialCardView>

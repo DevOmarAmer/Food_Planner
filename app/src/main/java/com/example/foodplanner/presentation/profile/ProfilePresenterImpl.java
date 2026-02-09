@@ -31,9 +31,20 @@ public class ProfilePresenterImpl implements ProfilePresenter {
     public void loadUserInfo() {
         String userName = sharedPrefsHelper.getUserName();
         String userEmail = sharedPrefsHelper.getUserEmail();
+        String userImageUrl = sharedPrefsHelper.getUserImageUrl();
         boolean isGuest = sharedPrefsHelper.isGuest();
 
-        view.showUserInfo(userName, userEmail, isGuest);
+        // If no saved image URL, try to get from Firebase user
+        if ((userImageUrl == null || userImageUrl.isEmpty()) && !isGuest) {
+            com.google.firebase.auth.FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (firebaseUser != null && firebaseUser.getPhotoUrl() != null) {
+                userImageUrl = firebaseUser.getPhotoUrl().toString();
+                // Save it for next time
+                sharedPrefsHelper.setUserImageUrl(userImageUrl);
+            }
+        }
+
+        view.showUserInfo(userName, userEmail, userImageUrl, isGuest);
     }
 
     @Override
@@ -137,7 +148,8 @@ public class ProfilePresenterImpl implements ProfilePresenter {
             return;
         }
         sharedPrefsHelper.setUserName(newName.trim());
-        view.showUserInfo(newName.trim(), sharedPrefsHelper.getUserEmail(), sharedPrefsHelper.isGuest());
+        view.showUserInfo(newName.trim(), sharedPrefsHelper.getUserEmail(), sharedPrefsHelper.getUserImageUrl(),
+                sharedPrefsHelper.isGuest());
         view.showProfileUpdateSuccess();
     }
 

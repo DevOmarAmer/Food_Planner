@@ -26,6 +26,7 @@ import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repository.MealRepository;
 import com.example.foodplanner.presentation.auth.AuthActivity;
 import com.example.foodplanner.utils.CalendarHelper;
+import com.example.foodplanner.utils.ImageCacheHelper;
 import com.example.foodplanner.utils.SharedPrefsHelper;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -301,7 +302,7 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     }
 
     private void showDayPickerDialog() {
-    
+
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
@@ -328,18 +329,15 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
             selectedDate.set(Calendar.SECOND, 0);
             selectedDate.set(Calendar.MILLISECOND, 0);
 
-            
             java.text.SimpleDateFormat dayFormat = new java.text.SimpleDateFormat("EEEE", java.util.Locale.ENGLISH);
             String dayName = dayFormat.format(selectedDate.getTime());
 
-            
             java.text.SimpleDateFormat displayFormat = new java.text.SimpleDateFormat("MMMM d, yyyy",
                     java.util.Locale.getDefault());
             String displayDate = displayFormat.format(selectedDate.getTime());
 
             presenter.addToPlanWithDate(currentMeal, dayName, selectedDate.getTimeInMillis());
 
-            
             Toast.makeText(this,
                     getString(R.string.meal_added_to_plan) + " (" + displayDate + ")",
                     Toast.LENGTH_SHORT).show();
@@ -414,6 +412,10 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
         isFavorite = true;
         fabFavorite.setImageResource(R.drawable.ic_favorite);
         Toast.makeText(this, "Added to favorites!", Toast.LENGTH_SHORT).show();
+        // Pre-cache the meal image for offline viewing
+        if (currentMeal != null) {
+            ImageCacheHelper.preloadMealImage(this, currentMeal);
+        }
     }
 
     @Override
@@ -432,6 +434,10 @@ public class MealDetailsActivity extends AppCompatActivity implements MealDetail
     @Override
     public void showAddedToPlan(String day) {
         Toast.makeText(this, "Added to " + day + "'s plan!", Toast.LENGTH_SHORT).show();
+        // Pre-cache the meal image for offline viewing
+        if (currentMeal != null) {
+            ImageCacheHelper.preloadMealImage(this, currentMeal);
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.example.foodplanner.data.Auth.dataSource.local;
 
 public interface AuthLocalDataSource {
     
-    void saveUserSession(String userId, String email, String displayName);
+    void saveUserSession(String userId, String email, String displayName, String imageUrl);
     
     void setGuestMode();
     

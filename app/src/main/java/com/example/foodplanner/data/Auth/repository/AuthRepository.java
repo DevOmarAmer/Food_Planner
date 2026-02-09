@@ -14,7 +14,7 @@ public interface AuthRepository {
     
     GetCredentialRequest buildGoogleSignInRequest(String webClientId);
     
-    void saveUserSession(String userId, String email, String displayName);
+    void saveUserSession(String userId, String email, String displayName, String imageUrl);
     
     boolean isUserLoggedIn();
     

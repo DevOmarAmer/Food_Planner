@@ -305,7 +305,8 @@ public class ProfileFragment extends Fragment implements ProfileView {
                     Uri.parse("market://details?id=" + requireContext().getPackageName())));
         } catch (android.content.ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=" + requireContext().getPackageName())));
+                    Uri.parse("https://devomaramer.github.io/Food_Planner/PRIVACY_POLICY.html"
+                            + requireContext().getPackageName())));
         }
     }
 
@@ -330,7 +331,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
     }
 
     @Override
-    public void showUserInfo(String name, String email, boolean isGuest) {
+    public void showUserInfo(String name, String email, String photoUrl, boolean isGuest) {
         if (isGuest) {
             tvUserName.setText(R.string.guest_user);
             tvUserEmail.setVisibility(View.GONE);
@@ -346,6 +347,14 @@ public class ProfileFragment extends Fragment implements ProfileView {
             layoutRestoreFromCloud.setAlpha(0.5f);
             layoutUploadToCloud.setEnabled(false);
             layoutRestoreFromCloud.setEnabled(false);
+
+            // Disable data management options for guests
+            layoutClearFavorites.setAlpha(0.5f);
+            layoutClearPlan.setAlpha(0.5f);
+            layoutClearAllData.setAlpha(0.5f);
+            layoutClearFavorites.setEnabled(false);
+            layoutClearPlan.setEnabled(false);
+            layoutClearAllData.setEnabled(false);
         } else {
             tvUserName.setText(name != null ? name : getString(R.string.unknown_user));
             if (email != null) {
@@ -354,6 +363,18 @@ public class ProfileFragment extends Fragment implements ProfileView {
             } else {
                 tvUserEmail.setVisibility(View.GONE);
             }
+            // Load profile image if available
+            if (photoUrl != null && !photoUrl.isEmpty()) {
+                Glide.with(requireContext())
+                        .load(photoUrl)
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(ivProfileAvatar);
+            } else {
+                ivProfileAvatar.setImageResource(R.drawable.ic_person);
+            }
+
             btnSignIn.setVisibility(View.GONE);
             btnLogout.setVisibility(View.VISIBLE);
 
