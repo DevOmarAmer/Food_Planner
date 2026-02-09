@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مخطط الوجبات</string>
+    
+    <!-- Splash Screen -->
+    <string name="splash_tagline">خطط لوجباتك، بسّط حياتك</string>
+    <string name="loading">جاري التحميل…</string>
+    
+    <!-- Authentication -->
+    <string name="welcome_back">مرحباً بعودتك!</string>
+    <string name="login_subtitle">سجّل دخولك لمتابعة تخطيط وجباتك</string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="signup_subtitle">انضم إلينا وابدأ تخطيط وجباتك</string>
+    
+    <!-- Form Fields -->
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="full_name">الاسم الكامل</string>
+    
+    <!-- Buttons -->
+    <string name="login">تسجيل الدخول</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="continue_with_google">المتابعة مع Google</string>
+    <string name="continue_as_guest">المتابعة كضيف</string>
+    
+    <!-- Navigation -->
+    <string name="or">أو</string>
+    <string name="dont_have_account">ليس لديك حساب؟ سجّل الآن</string>
+    <string name="already_have_account">لديك حساب؟ سجّل دخولك</string>
+    <string name="back">رجوع</string>
+    
+    <!-- Messages -->
+    <string name="login_success">تم تسجيل الدخول بنجاح!</string>
+    <string name="signup_success">تم إنشاء الحساب بنجاح!</string>
+    <string name="google_signin_success">تم تسجيل الدخول بـ Google!</string>
+    <string name="guest_mode_notice">أنت تتصفح كضيف. بعض الميزات محدودة.</string>
+    
+    <!-- Errors -->
+    <string name="error_email_required">البريد الإلكتروني مطلوب</string>
+    <string name="error_password_required">كلمة المرور مطلوبة</string>
+    <string name="error_name_required">الاسم مطلوب</string>
+    <string name="error_password_short">يجب أن تكون كلمة المرور 6 أحرف على الأقل</string>
+    <string name="error_passwords_not_match">كلمات المرور غير متطابقة</string>
+    <string name="error_invalid_email">يرجى إدخال بريد إلكتروني صحيح</string>
+    <string name="error_login_failed">فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.</string>
+    <string name="error_signup_failed">فشل إنشاء الحساب. يرجى المحاولة مرة أخرى.</string>
+    
+    <!-- Navigation Items -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_search">البحث</string>
+    <string name="nav_favorites">المفضلة</string>
+    <string name="nav_plan">الخطة</string>
+    <string name="nav_profile">الملف الشخصي</string>
+    <string name="home">الرئيسية</string>
+    <string name="search">البحث</string>
+    <string name="favorites">المفضلة</string>
+    <string name="plan">خطة الوجبات</string>
+    <string name="meal_of_the_day">وجبة اليوم</string>
+    <string name="categories">التصنيفات</string>
+    <string name="countries">البلدان</string>
+    <string name="see_all">عرض الكل</string>
+    <string name="try_this">جرّب هذا!</string>
+    <string name="no_network">لا يوجد اتصال بالإنترنت</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="guest_user">مستخدم ضيف</string>
+    <string name="unknown_user">مستخدم</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="logout_confirmation">هل أنت متأكد من تسجيل الخروج؟</string>
+    <string name="cancel">إلغاء</string>
+    
+    <!-- Profile -->
+    <string name="sign_in_to_sync">سجّل دخولك لمزامنة البيانات</string>
+    <string name="planned_meals">المخططة</string>
+    <string name="cloud_sync">المزامنة السحابية</string>
+    <string name="backup_to_cloud">نسخ احتياطي للسحابة</string>
+    <string name="backup_description">رفع المفضلة وخطط الوجبات</string>
+    <string name="restore_from_cloud">استعادة من السحابة</string>
+    <string name="restore_description">تحميل بياناتك المحفوظة</string>
+    <string name="backup">نسخ احتياطي</string>
+    <string name="restore">استعادة</string>
+    
+    <!-- Offline Mode -->
+    <string name="offline_mode_banner">أنت غير متصل. عرض المحتوى المخزن.</string>
+    
+    <!-- Guest Mode -->
+    <string name="sign_in_required">يجب تسجيل الدخول</string>
+    <string name="sign_in_to_use_feature">يرجى تسجيل الدخول لاستخدام هذه الميزة</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    
+    <!-- App Settings -->
+    <string name="app_settings">إعدادات التطبيق</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="dark_mode_description">تفعيل السمة الداكنة</string>
+    <string name="language">اللغة</string>
+    <string name="language_description">اختر لغة التطبيق</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
+    <string name="language_changed">تم تغيير اللغة. سيتم إعادة تشغيل التطبيق.</string>
+    
+    <!-- Account Settings -->
+    <string name="account_settings">الحساب</string>
+    <string name="update_profile">تحديث الملف الشخصي</string>
+    <string name="update_profile_description">تغيير اسمك</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="change_password_description">تحديث كلمة المرور</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="enter_new_name">أدخل الاسم الجديد</string>
+    <string name="profile_updated">تم تحديث الملف الشخصي بنجاح</string>
+    <string name="password_changed">تم تغيير كلمة المرور بنجاح</string>
+    <string name="password_change_failed">فشل تغيير كلمة المرور</string>
+    
+    <!-- Data Management -->
+    <string name="data_management">إدارة البيانات</string>
+    <string name="clear_favorites">مسح المفضلة</string>
+    <string name="clear_favorites_description">حذف جميع المفضلة المحفوظة</string>
+    <string name="clear_plan">مسح خطة الوجبات</string>
+    <string name="clear_plan_description">حذف جميع الوجبات المخططة</string>
+    <string name="clear_all_data">مسح جميع البيانات</string>
+    <string name="clear_all_data_description">حذف جميع البيانات المحلية</string>
+    <string name="clear_favorites_confirmation">هل أنت متأكد من مسح جميع المفضلة؟ لا يمكن التراجع عن هذا.</string>
+    <string name="clear_plan_confirmation">هل أنت متأكد من مسح خطة الوجبات؟ لا يمكن التراجع عن هذا.</string>
+    <string name="clear_all_confirmation">⚠️ سيتم حذف جميع بياناتك بما في ذلك المفضلة وخطط الوجبات. لا يمكن التراجع!</string>
+    <string name="data_cleared">تم مسح البيانات بنجاح</string>
+    <string name="clear">مسح</string>
+    
+    <!-- About Section -->
+    <string name="about">حول التطبيق</string>
+    <string name="app_version">إصدار التطبيق</string>
+    <string name="rate_app">تقييم التطبيق</string>
+    <string name="rate_app_description">أخبرنا برأيك</string>
+    <string name="share_app">مشاركة التطبيق</string>
+    <string name="share_app_description">انصح به أصدقاءك</string>
+    <string name="share_app_text">جرّب مخطط الوجبات - أفضل تطبيق لتخطيط الوجبات! حمّله الآن</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+</resources>

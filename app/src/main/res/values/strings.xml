@@ -1,42 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Food Planner</string>
-    
-    <!-- Splash Screen -->
+
     <string name="splash_tagline">Plan Your Meals, Simplify Your Life</string>
     <string name="loading">Loading…</string>
-    
-    <!-- Authentication -->
+
     <string name="welcome_back">Welcome Back!</string>
     <string name="login_subtitle">Sign in to continue planning your meals</string>
     <string name="create_account">Create Account</string>
     <string name="signup_subtitle">Join us and start planning your meals</string>
-    
-    <!-- Form Fields -->
+
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="full_name">Full Name</string>
-    
-    <!-- Buttons -->
+
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="continue_with_google">Continue with Google</string>
     <string name="continue_as_guest">Continue as Guest</string>
 
-    
-    <!-- Navigation -->
     <string name="or">OR</string>
     <string name="dont_have_account">Don\'t have an account? Sign Up</string>
     <string name="already_have_account">Already have an account? Login</string>
     <string name="back">Back</string>
-    
-    <!-- Messages -->
+
     <string name="login_success">Login successful!</string>
     <string name="signup_success">Account created successfully!</string>
     <string name="google_signin_success">Signed in with Google!</string>
     <string name="guest_mode_notice">You\'re browsing as a guest. Some features are limited.</string>
-    
-    <!-- Errors -->
+
     <string name="error_email_required">Email is required</string>
     <string name="error_password_required">Password is required</string>
     <string name="error_name_required">Name is required</string>
@@ -45,8 +38,7 @@
     <string name="error_invalid_email">Please enter a valid email</string>
     <string name="error_login_failed">Login failed. Please try again.</string>
     <string name="error_signup_failed">Sign up failed. Please try again.</string>
-    
-    <!-- Onboarding -->
+
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="get_started">Get Started</string>
@@ -76,15 +68,13 @@
     <string name="try_this">Try This!</string>
     <string name="no_network">No internet connection</string>
     <string name="retry">Retry</string>
-    <string name="profile_avatar">Profile Avatar</string>
     <string name="guest_user">Guest User</string>
     <string name="unknown_user">User</string>
     <string name="logout">Logout</string>
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="cancel">Cancel</string>
     <string name="search_hint">Search for meals...</string>
-    
-    <!-- Profile -->
+
     <string name="sign_in_to_sync">Sign in to sync data</string>
     <string name="planned_meals">Planned</string>
     <string name="cloud_sync">Cloud Sync</string>
@@ -96,20 +86,64 @@
     <string name="restore">Restore</string>
     <string name="backup_confirmation">This will upload your favorites and meal plans to the cloud. Continue?</string>
     <string name="restore_confirmation">This will download your data from the cloud. Existing local data will be merged. Continue?</string>
-    
-    <!-- Offline Mode -->
+
     <string name="offline_mode_banner">You\'re offline. Showing cached content.</string>
-    
-    <!-- Guest Mode Restrictions -->
+
     <string name="sign_in_required">Sign in Required</string>
     <string name="sign_in_to_use_feature">Please sign in to use this feature</string>
     <string name="sign_in_to_save_favorites">Sign in to save your favorite meals and access them across devices</string>
     <string name="sign_in_to_plan_meals">Sign in to plan your meals and sync them across devices</string>
     <string name="sign_in">Sign In</string>
-    
-    <!-- Calendar Integration -->
+
     <string name="add_to_calendar">Add to Calendar</string>
     <string name="meal_added_to_calendar">Meal added to calendar</string>
     <string name="select_date">Select Date</string>
     <string name="calendar_permission_required">Calendar permission is required to add meals</string>
+
+    <string name="app_settings">App Settings</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_description">Enable dark theme</string>
+    <string name="language">Language</string>
+    <string name="language_description">Choose app language</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
+    <string name="language_changed">Language changed. App will restart.</string>
+
+    <string name="account_settings">Account</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="update_profile_description">Change your name</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_description">Update your password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="enter_new_name">Enter new name</string>
+    <string name="profile_updated">Profile updated successfully</string>
+    <string name="password_changed">Password changed successfully</string>
+    <string name="password_change_failed">Failed to change password</string>
+
+    <string name="data_management">Data Management</string>
+    <string name="clear_favorites">Clear Favorites</string>
+    <string name="clear_favorites_description">Remove all saved favorites</string>
+    <string name="clear_plan">Clear Meal Plan</string>
+    <string name="clear_plan_description">Remove all planned meals</string>
+    <string name="clear_all_data">Clear All Data</string>
+    <string name="clear_all_data_description">Remove all local data</string>
+    <string name="clear_favorites_confirmation">Are you sure you want to clear all favorites? This cannot be undone.</string>
+    <string name="clear_plan_confirmation">Are you sure you want to clear your meal plan? This cannot be undone.</string>
+    <string name="clear_all_confirmation">⚠️ This will delete ALL your data including favorites and meal plans. This cannot be undone!</string>
+    <string name="data_cleared">Data cleared successfully</string>
+    <string name="clear">Clear</string>
+
+    <string name="about">About</string>
+    <string name="app_version">App Version</string>
+    <string name="rate_app">Rate App</string>
+    <string name="rate_app_description">Tell us what you think</string>
+    <string name="share_app">Share App</string>
+    <string name="share_app_description">Recommend to friends</string>
+    <string name="share_app_text">Check out Food Planner - the best meal planning app! Download now: https://play.google.com/store/apps/details?id=com.example.foodplanner</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_url">https://example.com/privacy</string>
+
+    <string name="password_reset_email_sent">Password reset email sent successfully</string>
+    <string name="profile_avatar">Profile Avatar</string>
 </resources>
