@@ -1,103 +1,66 @@
-# 🍽️ Food Planner
+# 🍽️ Food Planner - Android Application
 
 > **Plan your meals. Simplify your life.**
 
-Food Planner is a modern **Android** application that helps you discover delicious recipes, organize your weekly meals, and keep your cooking routine stress‑free. Built with a clean architecture using the **MVP (Model–View–Presenter)** pattern.
+**Food Planner** هو تطبيق أندرويد حديث يساعدك على اكتشاف وصفات طعام شهية، تنظيم وجباتك الأسبوعية، وجعل روتين الطبخ الخاص بك خالياً من الإجهاد. تم بناء التطبيق باستخدام Clean Architecture ونمط التصميم **MVP (Model–View–Presenter)**.
 
 ---
 
-## 📱 About the App
+## 📱 حول التطبيق (About the App)
 
-Food Planner makes meal planning easy and enjoyable. Whether you’re looking for inspiration, saving your favorite recipes, or organizing meals for the week, the app keeps everything in one place — online or offline.
+يجعل Food Planner التخطيط للوجبات أمراً سهلاً وممتعاً. سواء كنت تبحث عن إلهام لوجبة اليوم، أو ترغب في حفظ وصفاتك المفضلة، أو تنظيم جدول وجباتك للأسبوع بالكامل، فإن التطبيق يوفر لك كل ذلك في مكان واحد مع دعم العمل في وضع الاتصال (Online) أو بدون اتصال (Offline).
 
----
 
-## ✨ Features
-
-* ✅ **Discover** random meal suggestions daily
-* ✅ **Browse** meals by category and country
-* ✅ **Search** recipes by name or ingredient
-* ✅ **Save** favorite meals for quick access
-* ✅ **Weekly Meal Planning**
-* ✅ **Cloud Sync** using Firebase
-* ✅ **Offline Mode** support
-* ✅ **Dark Mode** theme
-* ✅ **Multi‑language Support** (English & Arabic)
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ المميزات (Features)
 
-| Category           | Tools & Libraries                |
-| ------------------ | -------------------------------- |
-| **Language**       | Java                             |
-| **Architecture**   | MVP (Model–View–Presenter)       |
-| **Networking**     | Retrofit, RxJava                 |
-| **Local Database** | Room Database                    |
-| **Cloud Database** | Firebase Firestore               |
-| **UI / UX**        | Material Design 3, Glide, Lottie |
-| **Authentication** | Firebase Authentication          |
-
----
-
-## 🏗️ Architecture Overview
-
-The app follows the **MVP** pattern to ensure scalability, testability, and clean separation of concerns:
-
-* **Model**
-  Handles data sources (API, Room, Firebase) using the Repository pattern.
-
-* **View**
-  Activities & Fragments responsible only for UI rendering and user interaction.
-
-* **Presenter**
-  Contains business logic, handles user actions, and updates the View.
+* ✅ **الاكتشاف:** اقتراحات لوجبات عشوائية يومياً.
+* ✅ **التصفح:** تصفح الوجبات حسب التصنيف (Category) أو الدولة (Country).
+* ✅ **البحث:** البحث عن الوصفات بالاسم أو المكونات.
+* ✅ **المفضلة:** حفظ الوجبات المفضلة للوصول السريع إليها.
+* ✅ **التخطيط الأسبوعي:** تنظيم جدول الوجبات على مدار أيام الأسبوع.
+* ✅ **المزامنة السحابية:** استخدام Firebase لمزامنة بياناتك عبر الأجهزة.
+* ✅ **وضع الـ Offline:** دعم كامل للوصول للبيانات المخزنة محلياً بدون إنترنت.
+* ✅ **الوضع الليلي (Dark Mode):** واجهة مريحة للعين.
+* ✅ **دعم لغات متعددة:** متاح باللغتين العربية والإنجليزية.
 
 ---
 
-## 📡 API Used
+## 🛠️ الأدوات والتقنيات (Tech Stack)
 
-This project uses **TheMealDB API** to fetch meals and recipe data:
-
-* [https://www.themealdb.com/](https://www.themealdb.com/)
+| الفئة | التقنيات المستخدمة |
+| :--- | :--- |
+| **لغة البرمجة** | Java |
+| **نمط المعمارية** | MVP (Model–View–Presenter) |
+| **التعامل مع الشبكات** | Retrofit, RxJava |
+| **قواعد البيانات المحلية** | Room Database |
+| **قواعد البيانات السحابية** | Firebase Firestore |
+| **التصميم والواجهات** | Material Design 3, Glide (Images), Lottie (Animations) |
+| **نظام الهوية** | Firebase Authentication |
 
 ---
 
-## 🚀 Getting Started
+## 🏗️ نظرة على المعمارية (Architecture Overview)
 
-1. Clone the repository:
+يعتمد التطبيق نمط **MVP** لضمان قابلية التوسع، وسهولة الاختبار، وفصل المهام بشكل واضح:
 
+* **Model:** مسؤول عن مصادر البيانات (API, Room, Firebase) باستخدام نمط الـ **Repository**.
+* **View:** تمثله الـ Activities و Fragments، ومهمتها فقط عرض الواجهة والتفاعل مع المستخدم.
+* **Presenter:** يحتوي على المنطق البرمجي (Business Logic)، يستقبل أوامر المستخدم من الواجهة ويحدثها بناءً على البيانات المستلمة من الـ Model.
+
+---
+
+## 📡 مصدر البيانات (API)
+
+يعتمد هذا المشروع على **TheMealDB API** لجلب بيانات الوجبات والوصفات:
+* [TheMealDB API](https://www.themealdb.com/)
+
+---
+
+## 🚀 بدء التشغيل (Getting Started)
+
+1. قم بعمل Clone للمستودع:
    ```bash
-   git clone https://github.com/your-username/food-planner.git
-   ```
-2. Open the project in **Android Studio**
-3. Add your Firebase configuration (`google-services.json`)
-4. Build & run the app on an emulator or physical device
-
----
-
-## 📌 Future Improvements
-
-* 🔄 Meal reminders & notifications
-* ❤️ Social sharing of recipes
-* 📊 Nutrition & calorie tracking
-* 🧪 Unit & UI testing
-
----
-
-## 👨‍💻 Developer
-
-**Omar Amer**
-Mid‑Level Flutter Developer & ITI Scholar
-
-🌐 Portfolio: [https://devomaramer.github.io/My_Portfolio/](https://devomaramer.github.io/My_Portfolio/)
-
----
-
-## 📄 License
-
-© 2024 Food Planner. All rights reserved.
-
----
-
-⭐ If you like this project, don’t forget to **star the repository**!
+   git clone [https://github.com/Omar-Amer/food-planner.git](https://github.com/Omar-Amer/food-planner.git)
