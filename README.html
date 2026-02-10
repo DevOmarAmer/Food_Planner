@@ -1,49 +1,103 @@
 # 🍽️ Food Planner
-### Plan Your Meals, Simplify Your Life
+
+> **Plan your meals. Simplify your life.**
+
+Food Planner is a modern **Android** application that helps you discover delicious recipes, organize your weekly meals, and keep your cooking routine stress‑free. Built with a clean architecture using the **MVP (Model–View–Presenter)** pattern.
 
 ---
 
-## 📱 About
-**Food Planner** is a modern Android application that helps you discover delicious recipes, plan your weekly meals, and organize your cooking routine. Built with a clean architecture using the **MVP** pattern.
+## 📱 About the App
+
+Food Planner makes meal planning easy and enjoyable. Whether you’re looking for inspiration, saving your favorite recipes, or organizing meals for the week, the app keeps everything in one place — online or offline.
+
+---
 
 ## ✨ Features
-* ✅ **Discover** random meal suggestions daily.
-* ✅ **Browse** meals by category and country.
-* ✅ **Search** for recipes by name or ingredient.
-* ✅ **Save** favorite meals for quick access.
-* ✅ **Plan** meals for the entire week.
-* ✅ **Cloud Sync** with Firebase.
-* ✅ **Offline Mode** support.
-* ✅ **Dark Mode** theme.
-* ✅ **Multi-language** support (English & Arabic).
 
-## 🛠️ Technologies
-| Category | Tools & Libraries |
-| :--- | :--- |
-| **Language** | Java |
-| **Architecture** | MVP (Model-View-Presenter) |
-| **Networking** | Retrofit, RxJava |
-| **Database** | Room Database, Firestore |
-| **UI/UX** | Material Design 3, Glide, Lottie |
-| **Auth** | Firebase Authentication |
+* ✅ **Discover** random meal suggestions daily
+* ✅ **Browse** meals by category and country
+* ✅ **Search** recipes by name or ingredient
+* ✅ **Save** favorite meals for quick access
+* ✅ **Weekly Meal Planning**
+* ✅ **Cloud Sync** using Firebase
+* ✅ **Offline Mode** support
+* ✅ **Dark Mode** theme
+* ✅ **Multi‑language Support** (English & Arabic)
 
-## 🏗️ Architecture
-The app follows the **MVP** pattern with a clean separation of concerns:
-* **Model:** Data layer with Repository pattern.
-* **View:** Activities and Fragments.
-* **Presenter:** Business logic and data transformation.
+---
 
+## 🛠️ Tech Stack
 
+| Category           | Tools & Libraries                |
+| ------------------ | -------------------------------- |
+| **Language**       | Java                             |
+| **Architecture**   | MVP (Model–View–Presenter)       |
+| **Networking**     | Retrofit, RxJava                 |
+| **Local Database** | Room Database                    |
+| **Cloud Database** | Firebase Firestore               |
+| **UI / UX**        | Material Design 3, Glide, Lottie |
+| **Authentication** | Firebase Authentication          |
 
-## 📡 API
-This app uses [TheMealDB](https://www.themealdb.com/) API for meal data.
+---
+
+## 🏗️ Architecture Overview
+
+The app follows the **MVP** pattern to ensure scalability, testability, and clean separation of concerns:
+
+* **Model**
+  Handles data sources (API, Room, Firebase) using the Repository pattern.
+
+* **View**
+  Activities & Fragments responsible only for UI rendering and user interaction.
+
+* **Presenter**
+  Contains business logic, handles user actions, and updates the View.
+
+---
+
+## 📡 API Used
+
+This project uses **TheMealDB API** to fetch meals and recipe data:
+
+* [https://www.themealdb.com/](https://www.themealdb.com/)
+
+---
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/food-planner.git
+   ```
+2. Open the project in **Android Studio**
+3. Add your Firebase configuration (`google-services.json`)
+4. Build & run the app on an emulator or physical device
+
+---
+
+## 📌 Future Improvements
+
+* 🔄 Meal reminders & notifications
+* ❤️ Social sharing of recipes
+* 📊 Nutrition & calorie tracking
+* 🧪 Unit & UI testing
 
 ---
 
 ## 👨‍💻 Developer
-**Omar Amer** Mid-Level Flutter Developer & ITI Scholar
 
-[Visit My Portfolio →](https://devomaramer.github.io/My_Portfolio/)
+**Omar Amer**
+Mid‑Level Flutter Developer & ITI Scholar
+
+🌐 Portfolio: [https://devomaramer.github.io/My_Portfolio/](https://devomaramer.github.io/My_Portfolio/)
 
 ---
+
+## 📄 License
+
 © 2024 Food Planner. All rights reserved.
+
+---
+
+⭐ If you like this project, don’t forget to **star the repository**!
