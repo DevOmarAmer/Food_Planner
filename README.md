@@ -81,7 +81,7 @@ Follow these steps to get the project running on your local machine:
 
 * 🌐 **Portfolio:** [devomaramer.github.io](https://devomaramer.github.io/My_Portfolio/)
 * 💼 **LinkedIn:** [Omar Amer](https://www.linkedin.com/in/omar-amer-fathy/)
-* 📧 **Email:** [Your Email Here]
+* 📧 **Email:** dv.omar9@gmail.com
 
 ---
 
